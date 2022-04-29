@@ -1,0 +1,120 @@
+<div class="content" role="main">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item">Progetti Java</li>
+      <li class="breadcrumb-item active" aria-current="page">Dipendenze</li>
+    </ol>
+  </nav>
+
+  <div class="info right">
+    <a href="/data/dependencies.txt">Scarica il report in formato testuale</a>
+  </div>
+  <fieldset class="fieldSetMaxLib">
+    <legend>Ricerca massima versione librerie progetto</legend>
+    <div class="input-group">
+      <input type="text" class="form-control" id="searchMaxVersion"
+             (keydown.enter)="onSearchMaxVersion($event);showTempLib($event)"
+             placeholder="Inserire il nome di un progetto per controllare l'esistenza di librerie più aggiornate."
+             aria-label="Inserire il nome di un progetto per controllare l'esistenza di librerie più aggiornate.">
+      <button class="btn btn-outline-primary" (click)="onSearchMaxVersion($event)" type="button">Cerca</button>
+      <button class="btn btn-outline-secondary" (click)="onSearchMaxVersionClean($event)" type="button">Cancella
+      </button>
+    </div>
+    <div class="searchTemporaryLibsBox">
+      <input class="form-check-input" type="checkbox" id="isShownTempLib" (change)="showTempLib($event)">
+      <label class="form-check-label" for="isShownTempLib" style="padding-left: 10px">
+        Mostra librerie temporanee
+      </label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>Ricerca progetti che usano una libreria</legend>
+    <div class="input-group">
+      <input type="text" class="form-control" id="depsSearch" (keydown.enter)="onSearch($event)"
+             placeholder="Inserire il nome di una libreria. Ad esempio RepositoryClient."
+             aria-label="Inserire il nome di una libreria. Ad esempio RepositoryClient.">
+      <button class="btn btn-outline-primary" (click)="onSearch($event)" type="button">Cerca</button>
+      <button class="btn btn-outline-secondary" (click)="onSearchClean($event)" type="button">Cancella</button>
+    </div>
+
+  </fieldset>
+  <br/>
+  <hr/>
+  <div class="searchResult" *ngIf="searchingMaxVersion">
+    <div class="bold">Risultati:</div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Libreria</th>
+        <th>Versione</th>
+        <th>GroupId</th>
+        <th>Parent</th>
+        <th>Versione attuale</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let lib of matchedLibraries" [ngClass]="{ 'highlight-row': lib.styleRed }">
+        <td>{{ lib.artifactId }}</td>
+        <td><a href="{{lib.nexusUrl}}">{{ lib.version }}</a></td>
+        <td>{{ lib.groupId }}</td>
+        <td>{{ lib.parent }}</td>
+        <td>{{ lib.actualVersion }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-container *ngIf="isShownTempLib">
+      <div class="bold">Librerie temporanee:</div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th>Libreria</th>
+          <th>Versione</th>
+          <th>GroupId</th>
+          <th>Parent</th>
+          <th>Versione attuale</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let tempLib of matchedTempLibraries">
+          <td>{{ tempLib.artifactId }}</td>
+          <td><a href="{{tempLib.nexusUrl}}">{{ tempLib.version }}</a></td>
+          <td>{{ tempLib.groupId }}</td>
+          <td>{{ tempLib.parent }}</td>
+          <td>{{ tempLib.actualVersion }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <hr/>
+  </div>
+  <div class="searchResult" *ngIf="searching">
+    <div class="bold">Risultati:</div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Progetto</th>
+        <th>Libreria</th>
+        <th>Versione</th>
+        <th>Gruppo</th>
+        <th>Link Nexus</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let match of matches; let i = index">
+        <td>{{ match.project }}</td>
+        <td><a href="/dependencies#line-{{ match.line }}">{{ match.name }}</a></td>
+        <td>{{ match.version }}</td>
+        <td>{{ match.group }}</td>
+        <td><a href="{{ match.nexusUrl }}">{{ match.nexusUrl }}</a></td>
+      </tr>
+      </tbody>
+    </table>
+    <hr/>
+  </div>
+  <div class="report">
+    <div id="line-{{ (i+1) }}" *ngFor="let line of lines; let i = index">{{ line }}</div> <!-- line.id - line.value -->
+  </div>
+
+</div>

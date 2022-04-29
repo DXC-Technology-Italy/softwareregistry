@@ -1,0 +1,78 @@
+<div class="content" role="main">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item">Ambiente di sviluppo</li>
+      <li class="breadcrumb-item active" aria-current="page">Lista repository software</li>
+    </ol>
+  </nav>
+
+  <div class="info right">
+    <a href="/data/repositories.json">Scarica il report in formato testuale</a><br>
+    <a [routerLink]="" (click)="download($event)" type="button">Scarica il report in formato csv</a>
+  </div>
+
+  <form #form="ngForm">
+    <div class="form-group filters">
+      <strong>Area</strong>
+      <select class="form-select" name="area"
+              [(ngModel)]="area">
+        <option></option>
+        <option *ngFor="let area of areas"
+                [value]="area">{{ area }}</option>
+      </select>
+    </div>
+    <div>
+      <button
+        class="btn btn-primary custom-btn"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target=".collapse-item"
+        aria-expanded="false"
+        aria-controls=".collapse-item"
+      >
+        Visualizza tutti i moduli
+      </button>
+    </div>
+    <table id="data_table" class="table table-bordered" style="table-layout: auto">
+      <thead>
+      <tr>
+        <th class="col-2">Nome</th>
+        <th class="col-1">Area</th>
+        <th class="col-1">Tipologia</th>
+        <th class="col-4">URL git</th>
+        <th class="col-4">Moduli Maven</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let repository of repositories | repositoryTableFilter: form.value; let i = index">
+        <td class="col-2">{{ repository.name }}</td>
+        <td class="col-1">{{ repository.area }}</td>
+        <td class="col-1">{{ repository.kind }}</td>
+        <td class="col-4"><a href="{{ repository.url }}">{{ repository.url }}</a></td>
+        <td class="col-4">
+          <!--            <div class="pre">{{ repository.projects }}</div>-->
+          <div *ngIf="repository.kind == 'Java' && repository.projects.length > 0">
+            <a class="modules-link" data-bs-toggle="collapse"
+               href="#collapse{{ repository.area }}_{{ repository.name }}" role="button" aria-expanded="false">
+              <i class="bi bi-card-list"></i> Visualizza moduli
+            </a>
+            <div class="collapse collapse-item" id="collapse{{ repository.area }}_{{ repository.name }}">
+              <table class="table modules-table table-sm">
+                <tbody>
+                <tr *ngFor="let rep of repository.projects">
+                  <td class="col">{{ rep.name }}</td>
+                  <td class="col bold">{{ rep.version.split("-")[0] }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </form>
+
+</div>

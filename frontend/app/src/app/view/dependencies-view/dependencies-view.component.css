@@ -1,0 +1,17 @@
+.fieldSetMaxLib{
+  margin-bottom: 3%;
+}
+
+.searchResult td {
+  width: 20%;
+}
+.searchTemporaryLibsBox {
+  padding: 10px;
+}
+.highlight-row {
+  background-color: #fff3cd;
+  /*color: #FFF;*/
+}
+.highlight-row a {
+  /*color: #FFF;*/
+}

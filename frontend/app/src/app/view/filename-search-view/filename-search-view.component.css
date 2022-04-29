@@ -1,0 +1,29 @@
+.content{
+  margin-top: 80px;
+}
+
+.searchTab {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.searchTab button {
+  margin-right: 10px;
+}
+
+table {
+  margin-top: 20px;
+}
+
+th{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.float-right{
+  float: right;
+}
+
+.custom-margin{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}

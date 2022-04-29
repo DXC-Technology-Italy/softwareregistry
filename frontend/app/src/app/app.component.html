@@ -1,0 +1,131 @@
+<nav
+  [ngClass]="getSelectedTheme() === 'dark' ? 'navbar navbar-expand-lg fixed-top navbar-dark bg-dark' : 'navbar navbar-expand-lg fixed-top navbar-light bg-light'"
+  [hidden]="!isUserLoggedIn()">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <i class="bi bi-clipboard-data"></i>
+      Registro Software <span class="v">v{{VERSION}}</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="home">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ambiente di sviluppo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="Lista Repository Software">
+            <li><a class="dropdown-item" href="/repositories">Lista repository software</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="{{ gitlabUrl }}">Gitlab</a></li>
+            <li><a class="dropdown-item" href="{{ nexusUrl }}">Nexus</a></li>
+            <li><a class="dropdown-item" href="{{ sonarUrl }}">SonarQube</a></li>
+            <li><a class="dropdown-item" href="{{ jenkinsUrl }}">Jenkins</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Progetti Java
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="Progetti Java">
+            <li><a class="dropdown-item" href="/projects-info">Lista progetti</a></li>
+            <li><a class="dropdown-item" href="/dependencies">Analisi dipendenze</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Ricerca
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="Ricerca">
+            <li><a class="dropdown-item" href="/code-search">Cerca in tutti i sorgenti</a></li>
+            <li><a class="dropdown-item" href="/filename-search">Cerca nome file in tutti i progetti</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Obiettivi di sviluppo
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="Obiettivi di sviluppo">
+            <li><a class="dropdown-item" href="/los">Genera LOS per obiettivo di sviluppo</a></li>
+            <li><a class="dropdown-item" href="/delivery-check">Genera report rilasci per obiettivo di sviluppo</a></li>
+          </ul>
+        </li>
+        <li *ngIf="isAdmin()" class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Impostazioni
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="Impostazioni">
+            <li><a class="dropdown-item" href="/user">Modifica ruolo Utenti</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="collapse navbar-collapse " id="navbarSupportedContentProfile">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> {{ getUsername() }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="Informazioni di profilo">
+            <li>
+              <a class="dropdown-item" aria-current="page" (click)="showSettingsDialog($event)"><i
+                class="bi bi-gear"></i> Impostazioni</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item" aria-current="page" href="#" (click)="logout($event)"><i
+                class="bi bi-box-arrow-left"></i> Logout</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+
+  <div
+    class="modal"
+    tabindex="-1"
+    role="dialog"
+    [ngStyle]="{'display': settingsDialogVisibility}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Impostazioni</h4>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <b>Ruolo</b>: {{ getRole() }}
+          </div>
+          <hr/>
+          <div class="mb-3">
+            <label for="themeSelector" class="form-label"><b>Tema</b></label>
+            <select id="themeSelector" class="form-select" aria-label="Tema" (change)="selectTheme($event)">
+              <option *ngFor="let theme of themes" [value]="theme.value" [selected]="theme.value === selectedTheme">
+                {{ theme.name }}
+              </option>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+                  (click)="hideSettingsDialog($event)">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

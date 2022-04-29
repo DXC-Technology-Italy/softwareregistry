@@ -1,0 +1,99 @@
+<div class="content" role="main">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 px-4 py-2">
+        <div class="col">
+          <div class="card shadow-sm">
+
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-house"></i> Ambiente di sviluppo</h5>
+              <hr />
+              <div class="card-text">
+                <p>
+                  Informazioni relative all'ambiente di sviluppo
+                </p>
+                <ul class="card-list">
+                  <li class="card-list-item"><a href="/repositories">Lista repository software</a></li>
+                </ul>
+                <ul class="card-list">
+                  <li class="card-list-item"><a href="{{ gitlabUrl }}">Gitlab</a></li>
+                  <li class="card-list-item"><a href="{{ nexusUrl}}">Nexus</a></li>
+                  <li class="card-list-item"><a href="{{ sonarUrl }}">SonarQube</a></li>
+                  <li class="card-list-item"><a href="{{ jenkinsUrl }}">Jenkins</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-code-slash"></i> Progetti Java</h5>
+              <hr />
+              <div class="card-text">
+                <p>
+                  Visualizzazione di tutti i progetti di tipologia Java e analisi delle dipendenze maven.
+                </p>
+                <ul class="card-list">
+                  <li class="card-list-item"><a href="/projects-info">Lista progetti</a></li>
+                  <li class="card-list-item"><a href="/dependencies">Analisi dipendenze</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-search"></i> Ricerca software</h5>
+              <hr />
+              <div class="card-text">
+                <p>
+                  Ricerche in tutti i sorgenti software.
+                </p>
+                <ul class="card-list">
+                  <li class="card-list-item"><a href="/code-search">Cerca in tutti i sorgenti</a></li>
+                  <li class="card-list-item"><a href="/filename-search">Cerca nome file in tutti i progetti</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><i class="bi bi-info-circle"></i> Obiettivi di sviluppo</h5>
+              <hr />
+              <div class="card-text">
+                <p>
+                  Generazione delle liste oggetti software per obiettivi di sviluppo in corso.
+                </p>
+                <ul class="card-list">
+                  <li class="card-list-item"><a href="/los">Genera LOS per obiettivo di sviluppo</a></li>
+                  <li class="card-list-item"><a href="/delivery-check">Genera report rilasci per obiettivo di sviluppo</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+    <div *ngIf="isAdmin()" class="col">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><i class="bi bi-gear"></i> Impostazioni </h5>
+          <hr />
+          <div class="card-text">
+            <p>
+              Gestione utenti
+            </p>
+            <ul class="card-list">
+              <li class="card-list-item"><a href="/user">Modifica ruolo Utenti</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      </div>
+
+</div>

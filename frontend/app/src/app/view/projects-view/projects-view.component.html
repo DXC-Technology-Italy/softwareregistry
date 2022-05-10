@@ -69,7 +69,7 @@
                   />
                 </div>
                 <div class="col-8">
-                  <label for="projectType"><strong>{{resourcebundle.labels.typology}}</strong></label>
+                  <label for="projectType"><strong>{{resourcebundle.labels.tags}}</strong></label>
                   <ng-multiselect-dropdown name="projectType" class="custom_dropdown" id="projectType"
                                            [placeholder]="'Tipologia Progetto'"
                                            [settings]="dropdownSettings"
@@ -192,7 +192,7 @@
         <th scope="col">{{resourcebundle.labels.version}}</th>
         <th scope="col">{{resourcebundle.labels.area}}</th>
         <th scope="col">{{resourcebundle.labels.repository}}</th>
-        <th scope="col">{{resourcebundle.labels.typology}}</th>
+        <th scope="col">{{resourcebundle.labels.tags}}</th>
         <th scope="col">Url Git</th>
       </tr>
       </thead>
@@ -207,7 +207,7 @@
         <td>{{ project.name }}</td>
         <td>{{ project.version }}</td>
         <td>{{ project.area }}</td>
-        <td>{{ project.repository}}</td>
+        <td>{{ project.repository }}</td>
         <td>
           <span *ngFor=" let type of project.projectType" class="custom_type_label">{{type.item_text}}</span>
         </td>

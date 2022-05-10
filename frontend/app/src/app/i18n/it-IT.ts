@@ -8,7 +8,7 @@ export const it = {
     settings: 'Impostazioni',
     role: 'Ruolo',
     theme: 'Tema',
-    typology: 'Tipologia',
+    tags: 'Tags',
     type: 'Tipo',
     area: 'Area',
     repository: 'Repository',
@@ -58,7 +58,11 @@ export const it = {
     generate_los_report: "Genera report rilasci per obiettivo di sviluppo",
     dev_releases: "Obiettivi di sviluppo",
     edit_users_role: "Modifica ruolo Utenti",
-    manage_users: "Gestione utenti"
+    manage_users: "Gestione utenti",
+    env_info: "Informazioni relative all'ambiente di sviluppo",
+    view_java_projects: "Visualizzazione di tutti i progetti di tipologia Java e analisi delle dipendenze maven.",
+    search_in_all_projects: "Ricerche in tutti i sorgenti software.",
+    view_los: "Generazione delle liste oggetti software per obiettivi di sviluppo in corso."
   }
   
 };

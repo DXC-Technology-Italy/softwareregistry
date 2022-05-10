@@ -70,3 +70,10 @@ The following external components are also used:
   - To MongoDB Database
 
 ![Process Components](./assets/components.png)
+
+## How to run the project(s)
+
+1. Configure and run the Jenkins pipeline, as described [here](./iac/README.md) 
+2. Run the Java Indexer, following the [Indexer instructions](./indexer/README.md)
+3. Build and run the [Backend](./backend/README.md) Project
+4. Build and run the [Frontend](./frontend/README.md) Project

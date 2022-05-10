@@ -10,7 +10,7 @@ export const en = {
     theme: 'Theme',
     search: 'Search',
     search_codebase: 'Search Codebase',
-    typology: 'Typology',
+    tags: 'Tags',
     type: 'Type',
     area: 'Area',
     repository: 'Repository',
@@ -58,7 +58,11 @@ export const en = {
     generate_los_report: "Generate software release report",
     dev_releases: "Software Release",
     edit_users_role: "Edit users role",
-    manage_users: "Manage Users"
+    manage_users: "Manage Users",
+    env_info: "Development environment information",
+    view_java_projects: "View all Java projects and check maven dependencies",
+    search_in_all_projects: "Search in all application sources",
+    view_los: "Generate software items lists for current software releases"    
   }
   
 };

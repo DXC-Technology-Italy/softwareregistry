@@ -1,6 +1,6 @@
 .idea
 target
-SoftwareRegistry.iml
+*.iml
 .settings
 .project
 .classpath

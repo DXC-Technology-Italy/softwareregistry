@@ -2,44 +2,54 @@ package com.cm.dev.service.impl;
 
 import com.cm.dev.dao.ProjectInfoDAO;
 import com.cm.dev.domain.ProjectInfo;
+import com.cm.dev.exception.ServiceException;
 import com.cm.dev.service.ProjectInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+/**
+ * Business Logic for ProjectInfo Objects
+ * 
+ */
 @Service
 public class ProjectInfoServiceImpl implements ProjectInfoService {
     @Autowired
-    ProjectInfoDAO projectInfoDAO;
+    private ProjectInfoDAO projectInfoDAO;
 
+    
+    /** 
+     * @return List<ProjectInfo>
+     * @throws ServiceException
+     */
     @Override
-    public List<ProjectInfo> getAllProjectInfos() throws Exception {
+    public List<ProjectInfo> getAllProjectInfos() throws ServiceException {
         return projectInfoDAO.getAll();
     }
 
+    
+    /** 
+     * @param projectInfo
+     * @throws ServiceException
+     */
     @Override
-    public ProjectInfo findAndModifyProjectInfo(ProjectInfo projectInfo) throws Exception {
+    public void findAndModifyProjectInfo(ProjectInfo projectInfo) throws ServiceException {
 
 
-        return projectInfoDAO.findAndModifyProjectInfo(projectInfo);
+        projectInfoDAO.findAndModifyProjectInfo(projectInfo);
     }
 
+    
+    /** 
+     * @param projectInfo
+     * @throws ServiceException
+     */
     @Override
-    public ProjectInfo findAndModifyMavenCertified(ProjectInfo projectInfo) throws Exception {
+    public void findAndModifyMavenCertified(ProjectInfo projectInfo) throws ServiceException {
 
-        return projectInfoDAO.findAndModifyMavenCertified(projectInfo);
-    }
-
-
-
-
-    @Override
-    public ProjectInfo update(ProjectInfo projectInfo) throws Exception {
-        return projectInfoDAO.save(projectInfo);
+        projectInfoDAO.findAndModifyMavenCertified(projectInfo);
     }
 
 

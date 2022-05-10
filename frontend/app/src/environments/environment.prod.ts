@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: "",   /* URL and PORT of Backend */
+  apiUrl: "",
   gitlabUrl: "",
   jenkinsUrl: "",
   nexusUrl: "",

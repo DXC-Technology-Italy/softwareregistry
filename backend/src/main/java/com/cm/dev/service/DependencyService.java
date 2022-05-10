@@ -1,12 +1,15 @@
 package com.cm.dev.service;
 
 import com.cm.dev.domain.Dependency;
-import com.cm.dev.domain.Project;
+import com.cm.dev.exception.ServiceException;
 
 import java.util.List;
 
+/**
+ * Interface that exposes methods to handle Dependencies business logic
+ */
 public interface DependencyService {
 
-    public List<Dependency> getByName(String name) throws Exception;
+    List<Dependency> getByName(String name) throws ServiceException;
 
 }

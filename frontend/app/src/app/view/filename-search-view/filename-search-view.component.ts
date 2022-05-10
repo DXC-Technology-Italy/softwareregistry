@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from 'src/app/service/auth/authentication.service';
 import {environment} from 'src/environments/environment';
 import {DownloadService} from '../../service/util/download.service';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-filename-search-view',
@@ -11,6 +12,8 @@ import {DownloadService} from '../../service/util/download.service';
   styleUrls: ['./filename-search-view.component.css']
 })
 export class FilenameSearchViewComponent implements OnInit {
+
+  resourcebundle : any = {};
 
   filename = '';
   area = '';
@@ -33,6 +36,8 @@ export class FilenameSearchViewComponent implements OnInit {
   noResults = false;
 
   constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()
   }
 
   ngOnInit(): void {
@@ -50,7 +55,7 @@ export class FilenameSearchViewComponent implements OnInit {
     });
   }
 
-  search($event: any): void {
+  search(): void {
     this.results = [];
     this.columnsOrder = new Map<string, string>([
       ['area', ''],
@@ -94,7 +99,7 @@ export class FilenameSearchViewComponent implements OnInit {
     return {searchKeyword, searchArea, searchRepository, searchType};
   }
 
-  clear($event: any): void {
+  clear(): void {
     this.columnsOrder = new Map<string, string>([
       ['area', ''],
       ['repository', ''],
@@ -125,7 +130,7 @@ export class FilenameSearchViewComponent implements OnInit {
   }
 
 
-  download($event: any): void {
+  download(): void {
     const filename = 'MatchingFiles_' + this.filename.replace(/\s/g, '_') + '.csv';
     this.downloadService.downloadUtil(filename, 'data_table');
   }

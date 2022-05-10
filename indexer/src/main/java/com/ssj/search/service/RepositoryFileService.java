@@ -24,6 +24,10 @@ public class RepositoryFileService {
     private static RepositoryFileService INSTANCE;
     private HashMap<String, JsonElement> repositoryMap;
 
+    
+    /** 
+     * @return HashMap<String, JsonElement>
+     */
     public HashMap<String, JsonElement> getRepositoryMap() {
         return this.repositoryMap;
     }
@@ -34,6 +38,10 @@ public class RepositoryFileService {
         loadMapFromRepositoryFiles();
     }
 
+    
+    /** 
+     * @return RepositoryFileService
+     */
     public static RepositoryFileService getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new RepositoryFileService();

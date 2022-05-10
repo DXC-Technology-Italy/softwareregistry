@@ -4,7 +4,7 @@ import {AuthenticationService} from 'src/app/service/auth/authentication.service
 
 import {environment} from 'src/environments/environment';
 import {DownloadService} from '../../service/util/download.service';
-import escapeStringRegexp from 'escape-string-regexp';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-searcher-view',
@@ -13,9 +13,7 @@ import escapeStringRegexp from 'escape-string-regexp';
 })
 export class CodeSearchViewComponent implements OnInit {
 
-  constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService) {
-  }
-
+  resourcebundle : any = {};
   area = '';
   repository = '';
   extension = '';
@@ -30,7 +28,7 @@ export class CodeSearchViewComponent implements OnInit {
   areas: string[] = [];
   projects: string[] = [];
   extensions: string[] = ['txt', 'java', 'xml', 'sql', 'sh', 'py', 'cob', 'properties', 'pco', 'cpy',
-                          'cbl', 'js', 'css', 'jsp', 'htc', 'html', 'htm', 'xsd', 'wsdl', 'xslt'];
+    'cbl', 'js', 'css', 'jsp', 'htc', 'html', 'htm', 'xsd', 'wsdl', 'xslt'];
   types: string[] = ['Java', 'Cobol', 'Database', 'SQL', 'Batch', 'Python', 'Altro'];
   results: SearchResult[] = [];
   columnsOrder: Map<string, string> = new Map<string, string>([
@@ -40,6 +38,11 @@ export class CodeSearchViewComponent implements OnInit {
     ['kind', ''],
     ['file', '']
   ]);
+
+  constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()
+  }
 
   ngOnInit(): void {
 
@@ -63,7 +66,7 @@ export class CodeSearchViewComponent implements OnInit {
     });
   }
 
-  clear($event: any): void {
+  clear(): void {
     this.area = '';
     this.repository = '';
     this.extension = '';
@@ -83,7 +86,7 @@ export class CodeSearchViewComponent implements OnInit {
     this.results = [];
   }
 
-  search($event: any): void {
+  search(): void {
     this.results = [];
     this.columnsOrder = new Map<string, string>([
       ['area', ''],
@@ -103,8 +106,6 @@ export class CodeSearchViewComponent implements OnInit {
     } = this.extractSearchAttributes();
     const url: string = environment.apiUrl + '/getMatchingFiles?' + searchArea + searchRepository + searchProject +
       searchExtension + searchType + searchFilename + '&limitResult=' + this.limitResult;
-    // TODO aggiungere escape per i caratteri speciali
-
     this.http.post(url, searchKeyword, this.authService.httpOptions()).subscribe((data) => {
       const response = Object.create(data);
       for (const key of Object.keys(data)) {
@@ -120,9 +121,9 @@ export class CodeSearchViewComponent implements OnInit {
   private extractSearchAttributes(): any {
     let searchKeyword;
     if (!(document.getElementById('wholeWord') as HTMLInputElement).checked && !this.keyword.includes(' ')) {
-      searchKeyword = '.*' + escapeStringRegexp(this.keyword) + '.*';
+      searchKeyword = '.*' + this.keyword.replace(/[@|\\{}()[\]^$+*?.]/g, '\\$&') + '.*';
     } else {
-      searchKeyword = escapeStringRegexp(this.keyword);
+      searchKeyword = this.keyword.replace(/[@|\\{}()[\]^$+*?.]/g, '\\$&');
     }
     const searchArea = this.area !== '' ? '&area=' + this.area : '';
     const searchRepository = this.repository !== '' ? '&repository=' + this.repository : '';
@@ -148,7 +149,7 @@ export class CodeSearchViewComponent implements OnInit {
 
   }
 
-  download($event: any): void {
+  download(): void {
     const filename = 'MatchingFiles_' + this.keyword.replace(/\s/g, '_') + '.csv';
     this.downloadService.downloadUtil(filename, 'data_table');
   }

@@ -1,70 +1,72 @@
 # Software Registry
 
-Il **Software Registry** è un sistema a supporto dello sviluppo software che espone le seguenti funzionalità:
+## Description
 
-- Generazione automatica catalogo del parco applicativo
-- Memorizzazione gerarchia aree / repository / progetti / dipendenze (solo progetti Java)
-- Analisi dipendenze dei progetti Java e verifica relazioni fra moduli maven​
-- Verifica presenza di librerie (dipendenze) aggiornate per ogni progetto
-- Ricerca centralizzata nei sorgenti software (Source Code Search Engine)
-- Visualizzazione lista oggetti software modificati in un branch di sviluppo
+*Software Registry* is a system that supports several software development aspects providing the following features:
 
-## Utilizzi
+- Automatic generation of a catalog of all software assets
+- Persistence of areas / repositories / projects / dependencies hierarchy of Java projects
+- Java project dependencies analysis and maven module relationships check
+- Check for project dependencies updates
+- Centralized search within software sources (Source Code Search Engine)
+- Visualization of the updated software objects list in a development branch
 
-- Censimento parco applicativo ​
-- Punto di accesso centralizzato alle informazioni su progetti, dipendenze e librerie
-- Ricerche e analisi sul codice, anche per team di assistenza
+## Use cases
 
-- Analisi di impatto per sviluppi software
-- Report sul parco applicativo
-- Report di dettaglio su software rilasciato (Lista oggetti software)
+- Software assets inventorying
+- Creation of a centralized information access point about projects, dependencies and libraries
+- Code search and analysis, also for support teams
+- Impact analysis for software developments
+- Software assets reporting
+- Deployed software reporting and deployments history
 
-## Componenti applicativi
+## Application Components
 
 - [Backend](./backend/README.md)
-  - Applicazione basata su [Spring Boot](spring.io/projects/spring-boot)
-  - Espone API Rest invocate da una Single Page Application Angular
+  - Application based on [Spring Boot](spring.io/projects/spring-boot)
+  - Exposes REST APIs to be invoked by the Frontend
 
 - [Frontend](./frontend/README.md)
-  - Single Page Application basata su [Angular](https://angular.io/)
+  - Single Page Application based on [Angular](https://angular.io/)
   
 - [Indexer](./indexer/README.md)
-  - Progetto per indicizzare sorgenti, basato su [Apache Lucene](https://lucene.apache.org/) e [Spring Boot](spring.io/projects/spring-boot)
+  - Source code indexer based on [Apache Lucene](https://lucene.apache.org/) e [Spring Boot](spring.io/projects/spring-boot)
 
 - [Pipeline Jenkins](./iac/README.md)
-  - Pipeline Groovy per analizzare le dipendenze applicative Java e generare una lista di dipendenze e repository git
-
-Sono inoltre utilizzati i seguenti componenti esterni:
+  - Groovy Pipeline that pulls a list of git repositories, analyzes Java dependencies and produces plain output files
+  
+The following external components are also used:
 
 - [MongoDB](https://www.mongodb.com/)
 - [Apache Lucene](https://lucene.apache.org/)
-- Un server LDAP
-- [Jenkins](https://www.jenkins.io/) (avvio pipelines)
+- A valid LDAP server
+- [Jenkins](https://www.jenkins.io/) (to run the pipelines)
 
-Il software **Software Registry** genera le informazioni sfruttando i seguenti sistemi:
+*Software Registry* generates all the information using these external applications:
 
 - [Gitlab](https://about.gitlab.com/)
 - [Redmine](https://www.redmine.org/)
 
-![Componenti architettura](./assets/basic_architecture.png)
+![Architecture Components](./assets/basic_architecture.png)
 
-## Processo di acquisizione dati
+## Data load process
 
-- *Pipeline Software Registry Scanner*:
-  - Genera una lista di repository di tutte le aree utilizzando le API REST di gitlab
-  - Esegue il checkout del repository, ramo master
-    - Ad ogni repository dovrebbe essere assegnato un "Topic" che ne indica la tecnologia (Java, Python, etc...)
-  - Per repository di tipologia Java:
-    - Raccoglie i **maven modules** : vengono registrati come Progetti
-    - Lancia l’analisi delle dipendenze: `mvn dependency:tree`
-    - Output: repositories.json, dependencies.txt
-  - Reload oggetti database **MongoDB**:
+- *Software Registry Scanner Pipeline*:
+  - Generates a repository list of all the groups using gitlab REST APIs
+  - Checks out each repository, master branch
+    - The repositories should have a tag specifying their technology (Java, Python, etc...)
+  - For each Java project:
+    - Loads all **maven modules** that are persisted later as Projects
+    - Runs dependencies analysis: `mvn dependency:tree`
+    - Creates the following files: repositories.json, dependencies.txt
+  - Reloads database **MongoDB** objects invoking the APIs:
     - HTTP GET ${BACKEND URL}/project/reload
     - HTTP GET ${BACKEND URL}/repository/reload
 
-- Il progetto "Indexer" analizza il codice scaricato dalla *Pipeline Software Registry Scanner* e va dunque avviato in un secondo momento
-- Il backend accede:
-  - All'indice Lucene
-  - Al database MongoDB
+- The "Indexer" project analyses source code downloaded by *Software Registry Scanner Pipeline*. So it should be ran after *Software Registry Scanner Pipeline*.
 
-![Componenti di processo](./assets/components.png)
+- The backend process accesses:
+  - To Lucene Index
+  - To MongoDB Database
+
+![Process Components](./assets/components.png)

@@ -2,15 +2,18 @@ package com.cm.dev.service;
 
 import com.cm.dev.bean.DevelopmentItem;
 import com.cm.dev.bean.Release;
+import com.cm.dev.exception.ServiceException;
 
+import java.io.IOException;
 import java.util.List;
 
+/**
+ * Interface that exposes methods to handle SoftwareReleases business logic
+ */
 public interface SoftwareReleaseService {
 
-    public List<DevelopmentItem> getLOS(String bigcode) throws Exception;
+    List<DevelopmentItem> getLOS(String bigcode) throws ServiceException, IOException;
 
-    public List<DevelopmentItem> getLosByBigCode(String bigCode) throws Exception;
-
-    public List<Release> getDeliveryCheck(String bigCode) throws Exception;
+    List<Release> getDeliveryCheck(String bigCode) throws ServiceException, IOException;
 
 }

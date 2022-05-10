@@ -3,6 +3,8 @@ package com.cm.dev.controller;
 import com.cm.dev.domain.Repository;
 import com.cm.dev.service.AreaService;
 import com.cm.dev.service.RepositoryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,15 +14,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
+/**
+ * Controller for Repository Objects
+ * 
+ */
+
 @RestController
 @CrossOrigin
 public class RepositoryController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RepositoryController.class);
 
     @Autowired
     private RepositoryService repositoryService;
     @Autowired
     private AreaService areaService;
 
+    
+    /** 
+     * @param orderby
+     * @return List<Repository>
+     */
     @RequestMapping("/repository")
     public List<Repository> getAllRepositories(@RequestParam(required = false) String orderby) {
         List<Repository> repositories = new ArrayList<>();
@@ -32,64 +47,76 @@ public class RepositoryController {
                 repositories = repositoryService.getAllRepositories();
             }
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
-        } finally {
-            return repositories;
+            LOGGER.error(String.valueOf(e));
         }
+        return repositories;
     }
 
 
+    
+    /** 
+     * @param code
+     * @return List<Repository>
+     */
     @RequestMapping("/repository/area/{code}")
     public List<Repository> getRepositoriesFromArea(@PathVariable(value = "code") String code) {
         List<Repository> repositories = new ArrayList<>();
         try {
-            // Area area = areaService.getByCode(code);
             repositories = repositoryService.getRepositoriesFromArea(code);
 
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
-        } finally {
-            return repositories;
+            LOGGER.error(String.valueOf(e));
         }
+        return repositories;
     }
 
+    
+    /** 
+     * @param kind
+     * @return List<String>
+     */
     @RequestMapping("/repository/kind/{kind}")
     public List<String> getRepositoriesByKind(@PathVariable(value = "kind") String kind) {
         List<String> repositories = new ArrayList<>();
         try {
-            // Area area = areaService.getByCode(code);
             repositories = repositoryService.getRepositoriesByKind(kind);
-
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
-        } finally {
-            return repositories;
+            LOGGER.error(String.valueOf(e));
         }
+        return repositories;
     }
 
     @RequestMapping("/repository/reload")
     public void reload() {
         try {
-            System.out.println("Reloading all repositories");
+            LOGGER.info("Reloading all repositories");
             repositoryService.reload();
-            System.out.println("End reloading all repositories");
+            LOGGER.info("End reloading all repositories");
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
+            LOGGER.error(String.valueOf(e));
         }
     }
 
+    
+    /** 
+     * @return List<String>
+     */
     @RequestMapping("/distinctRepositories")
     public List<String> getDistinctRepositories() {
         List<String> repositoryNames = new ArrayList<>();
         try {
             repositoryNames = repositoryService.getDistinctRepositories();
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
-        } finally {
-            return repositoryNames;
+            LOGGER.error(String.valueOf(e));
         }
+        return repositoryNames;
     }
 
+    
+    /** 
+     * @param orderby
+     * @return ResponseEntity<String>
+     */
     @RequestMapping("/repository/csv")
     public ResponseEntity<String> getRepositoryCSV(@RequestParam(required = false) String orderby) {
         StringBuilder builder = new StringBuilder();
@@ -114,11 +141,10 @@ public class RepositoryController {
                         .append("\n");
             }
         } catch (Exception e) {
-            System.out.println("Exception : " + e.getMessage());
+            LOGGER.error(String.valueOf(e));
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.TEXT_PLAIN)
-                .header("attachment; filename=ListaRepository.csv;")
                 .body(builder.toString());
     }
 

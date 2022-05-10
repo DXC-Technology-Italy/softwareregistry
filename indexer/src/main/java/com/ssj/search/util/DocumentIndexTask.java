@@ -34,6 +34,10 @@ public class DocumentIndexTask extends RecursiveAction {
 		              new DocumentIndexTask(documentsToBeIndexed.subList(split, documentsToBeIndexed.size()), this.indexClient));
 	}
 
+	
+	/** 
+	 * @param attributes
+	 */
 	protected void indexDirectly(DocumentIndexAttribute attributes) {
 		try {
 			indexClient.indexDocument(attributes.getWriter(), attributes.getFile(), attributes.getMillis());

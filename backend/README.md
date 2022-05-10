@@ -1,18 +1,28 @@
-# Software Registry - Progetto Back End
+# Software Registry - Back End Project
 
-## Compilazione e avvio
+This project exposes REST APIs to view and manage the following objects:
 
-### Configurazione
+- Areas (an area can be seen as a gitlab group)
+- Repositories
+- Projects
+- Projects extended information
+- Dependencies within each Java Project
+- Users
+- User Access Logs
+- Software Releases: information about project releases
 
-Configurare il seguente file di properties Spring Boot:
+## Build and Run
+
+### Configuration
+
+Before running the application it is necessary to configure the following files:
 
 - `src/main/resources/application.properties`
 
-### Avvio della applicazione
+### Run the application
 
-Configurare il file "deploy.sh" e avviarlo. Comandi invocati:
+Configure the file `deploy.sh` and run it. The script will basically do the following:
 
-```bash
-docker build -t ${GROUP}/${NAME}:${TAG} .
-docker run --name ${NAME} -d -p 0.0.0.0:${EXTERNAL_PORT}:${INTERNAL_PORT} -v ${DATA_HOME}:/data -v ${INDEX_HOME}:/index ${GROUP}/${NAME}:${TAG
-```
+- Build the code
+- Build a docker image based on nginx
+- Run the docker image

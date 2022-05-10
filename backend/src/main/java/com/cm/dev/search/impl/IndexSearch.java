@@ -2,7 +2,6 @@ package com.cm.dev.search.impl;
 
 import com.cm.dev.search.IndexFields;
 import com.cm.dev.search.Searcher;
-import com.cm.dev.exception.SearchException;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
@@ -11,7 +10,10 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,21 +23,22 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.cm.dev.util.ApplicationConstants.APP_CONST_ERROR_CODE_8001;
 
 
 /**
- * Perform Search in already created index
- *
- * @author Sushil
+ * Implements search scenarios using Lucene APIs
  */
 @Component("indexSearcher")
 public class IndexSearch implements Searcher {
 
-    private static final Logger logger = LoggerFactory.getLogger(IndexSearch.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(IndexSearch.class);
+    private static final String AND_CONDITION = " AND ";
 
     @Value("${search.index.directory}")
     private String indexPath;
@@ -49,38 +52,33 @@ public class IndexSearch implements Searcher {
      *                 <TR> FALSE : AND will be performed
      */
     @Override
-    public List<String> searchKeywords(List<String> keyWords, boolean fuzzy, String area, String project, String repository, String extension, String kind, String filename, String limitResult) {
-        List<String> fileNames = null;
+    public List<String> searchKeywords(List<String> keyWords, boolean fuzzy, String area, String project, String repository, String extension, String kind, String filename, String limitResult) throws IOException, ParseException{
+        List<String> fileNames;
         try (IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)))) {
             IndexSearcher searcher = new IndexSearcher(reader);
-//            Analyzer analyzer = new StandardAnalyzer();
-//            Analyzer analyzer = new WhitespaceAnalyzer();
             Analyzer analyzer = CustomAnalyzer.builder()
                     .withTokenizer(WhitespaceTokenizerFactory.NAME)
                     .addTokenFilter("lowercase")
-//                    .addTokenFilter(StopFilterFactory.NAME)
                     .build();
             QueryParser parser = new QueryParser("", analyzer);
             if (!fuzzy) {
                 parser.setDefaultOperator(QueryParser.Operator.AND);
             }
-            String searchArea = !area.equals("") ? " AND " + IndexFields.INDEX_FIELD_AREA + ":/" + area + "/" : "";
-            String searchRepository = (!repository.equals("") ? " AND " + IndexFields.INDEX_FIELD_REPOSITORY + ":/" + repository + "/" : "");
-            String searchProject = (!project.equals("") ? " AND " + IndexFields.INDEX_FIELD_PROJECT + ":/" + project + "/" : "");
-            String searchExtension = (!extension.equals("") ? " AND " + IndexFields.INDEX_FIELD_EXTENSION + ":/" + extension + "/" : "");
-            String searchKind = (!kind.equals("") ? " AND " + IndexFields.INDEX_FIELD_KIND + ":/" + kind + "/" : "");
-            String searchFilename = (!filename.equals("") ? " AND " + IndexFields.INDEX_FIELD_FILENAME + ":/" + filename + "/" : "");
+            String searchArea = !("").equals(area) ? AND_CONDITION + IndexFields.INDEX_FIELD_AREA + ":/" + area + "/" : "";
+            String searchRepository = (!("").equals(repository) ? AND_CONDITION + IndexFields.INDEX_FIELD_REPOSITORY + ":/" + repository + "/" : "");
+            String searchProject = (!("").equals(project) ? AND_CONDITION + IndexFields.INDEX_FIELD_PROJECT + ":/" + project + "/" : "");
+            String searchExtension = (!("").equals(extension) ? AND_CONDITION + IndexFields.INDEX_FIELD_EXTENSION + ":/" + extension + "/" : "");
+            String searchKind = (!("").equals(kind) ? AND_CONDITION + IndexFields.INDEX_FIELD_KIND + ":/" + kind + "/" : "");
+            String searchitems = (!("").equals(filename) ? AND_CONDITION + IndexFields.INDEX_FIELD_FILENAME + ":/" + filename + "/" : "");
 
-            Query query = parser.parse(IndexFields.INDEX_FIELD_CONTENTS + ":/" + keyWords.stream().collect(Collectors.joining(" ")) + "/" + searchArea + searchRepository + searchProject + searchExtension + searchKind + searchFilename);
-            String queryContent = "";
-            if(keyWords.size()>1) {
+            Query query = parser.parse(IndexFields.INDEX_FIELD_CONTENTS + ":/" + String.join(" ", keyWords) + "/" + searchArea + searchRepository + searchProject + searchExtension + searchKind + searchitems);
+            StringBuilder queryContent = new StringBuilder();
+            if (keyWords.size() > 1) {
                 for (String elem : keyWords) {
-                    queryContent = queryContent + "+" + IndexFields.INDEX_FIELD_CONTENTS + ":" + elem + " ";
+                    queryContent.append("+").append(IndexFields.INDEX_FIELD_CONTENTS).append(":").append(elem).append(" ");
                 }
-                query = parser.parse(queryContent + searchArea + searchRepository + searchProject + searchExtension + searchKind + searchFilename);
+                query = parser.parse(queryContent + searchArea + searchRepository + searchProject + searchExtension + searchKind + searchitems);
             }
-
-            System.out.println("query = " + query.toString());
 
             TopDocs docs = searcher.search(query, Integer.parseInt(limitResult));
             List<ScoreDoc> hitsList = Arrays.asList(docs.scoreDocs);
@@ -88,42 +86,53 @@ public class IndexSearch implements Searcher {
                 try {
                     return searcher.doc(scoreDoc.doc).get(IndexFields.INDEX_FIELD_PATH);
                 } catch (IOException e) {
-                    //Return null if document is not present
-                    return null;
+                    LOGGER.error(String.valueOf(e));
+                    return "";
                 }
-            }).filter(e -> e != null).collect(Collectors.toList());
+
+            }).filter(Objects::nonNull).collect(Collectors.toList());
         } catch (IOException | ParseException e) {
-            logger.error("Unable to search the keywords : ", e);
-            return Arrays.asList(APP_CONST_ERROR_CODE_8001);
+            LOGGER.error(String.valueOf(e));
+            return Collections.singletonList(APP_CONST_ERROR_CODE_8001);
         }
         return fileNames;
     }
 
+    
+    /** 
+     * @param filename
+     * @param area
+     * @param repository
+     * @param kind
+     * @param limitResult
+     * @return List<String>
+     * @throws IOException
+     * @throws ParseException
+     */
     @Override
-    public List<String> searchFilenames(String filename, String area, String repository, String kind, String limitResult) throws SearchException {
-        List<String> fileNames = null;
+    public List<String> searchFilenames(String filename, String area, String repository, String kind, String limitResult) throws IOException, ParseException{
+        List<String> fileNames;
         try (IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)))) {
             IndexSearcher searcher = new IndexSearcher(reader);
             Analyzer analyzer = new StandardAnalyzer();
             QueryParser parser = new QueryParser("", analyzer);
-            String searchArea = !area.equals("") ? " AND " + IndexFields.INDEX_FIELD_AREA + ":/" + area + "/" : "";
-            String searchRepository = (!repository.equals("") ? " AND " + IndexFields.INDEX_FIELD_REPOSITORY + ":/" + repository + "/" : "");
-            String searchKind = (!kind.equals("") ? " AND " + IndexFields.INDEX_FIELD_KIND + ":/" + kind + "/" : "");
+            String searchArea = !("").equals(area) ? AND_CONDITION + IndexFields.INDEX_FIELD_AREA + ":/" + area + "/" : "";
+            String searchRepository = (!("").equals(repository) ? AND_CONDITION + IndexFields.INDEX_FIELD_REPOSITORY + ":/" + repository + "/" : "");
+            String searchKind = (!("").equals(kind) ? AND_CONDITION + IndexFields.INDEX_FIELD_KIND + ":/" + kind + "/" : "");
             Query query = parser.parse(IndexFields.INDEX_FIELD_FILENAME + ":/" + filename + "/" + searchArea + searchRepository + searchKind);
-            System.out.println("query = " + query);
             TopDocs docs = searcher.search(query, Integer.parseInt(limitResult));
             List<ScoreDoc> hitsList = Arrays.asList(docs.scoreDocs);
             fileNames = hitsList.stream().map(scoreDoc -> {
                 try {
                     return searcher.doc(scoreDoc.doc).get(IndexFields.INDEX_FIELD_PATH);
                 } catch (IOException e) {
-                    //Return null if document is not present
-                    return null;
+                    LOGGER.error(String.valueOf(e));
+                    return "";
                 }
-            }).filter(e -> e != null).collect(Collectors.toList());
+            }).filter(Objects::nonNull).collect(Collectors.toList());
         } catch (IOException | ParseException e) {
-            logger.error("Unable to search the filename : ", e);
-            return Arrays.asList(APP_CONST_ERROR_CODE_8001);
+            LOGGER.error(String.valueOf(e));
+            return Collections.singletonList(APP_CONST_ERROR_CODE_8001);
         }
         return fileNames;
 

@@ -13,14 +13,14 @@ export class DownloadService {
     let data = '';
     const table = document.getElementById(idTable);
     // @ts-ignore
-    const tr = table.children[0].children[0];
+    const tr = table.children[1].children[0];
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < tr.children.length; i++) {
       data += tr.children[i].textContent + ';';
     }
     data = data.substring(0, data.length - 1) + '\n';
     // @ts-ignore
-    const tbody = table.children[1];
+    const tbody = table.children[2];
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < tbody.children.length; i++) {
       // tslint:disable-next-line:prefer-for-of
@@ -49,7 +49,7 @@ export class DownloadService {
     data = data.substring(0, data.length - 1) + '\n';
     const blob = new Blob([data as any], {type: 'text/csv'});
     const objectUrl = window.URL.createObjectURL(blob);
-    const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+    const a: HTMLAnchorElement = document.createElement('a');
 
     a.href = objectUrl;
     a.download = filename;

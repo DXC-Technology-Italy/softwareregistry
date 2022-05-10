@@ -1,10 +1,15 @@
 package com.cm.dev.dao;
 
 import com.cm.dev.domain.User;
+import com.mongodb.MongoException;
 
+/**
+ * Interface for User Data Access Objects. 
+ * The GenericDAO interface already exposes basic CRUD operations
+ */
 public interface UserDAO extends GenericDAO<User> {
 
-    public User get(String username) throws Exception;
+    User get(String username) throws MongoException;
 
-    public User updateUserRole(String username, String role) throws Exception;
+    User updateUserRole(String username, String role) throws MongoException;
 }

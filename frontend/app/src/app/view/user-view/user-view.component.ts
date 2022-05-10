@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthenticationService} from 'src/app/service/auth/authentication.service';
 import {environment} from 'src/environments/environment';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-user-view',
@@ -10,10 +11,15 @@ import {environment} from 'src/environments/environment';
 })
 export class UserViewComponent implements OnInit {
 
+  resourcebundle : any = {};
+
   users: User[] = [];
   selectedUser: User = new User();
 
-  constructor(private http: HttpClient, private authService: AuthenticationService) { }
+  constructor(private http: HttpClient, private authService: AuthenticationService) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()
+  }
 
   ngOnInit(): void {
     this.getUsers();
@@ -40,7 +46,7 @@ export class UserViewComponent implements OnInit {
     return httpOptions;
   }
 
-  setSelectedUser($event: any, i: number): void{
+  setSelectedUser(i: number): void{
     this.selectedUser = this.users[i];
 
   }
@@ -49,7 +55,7 @@ export class UserViewComponent implements OnInit {
     this.selectedUser.role = $event.target.value;
   }
 
-  saveChange($event: any): void{
+  saveChange(): void{
     this.http
       // tslint:disable-next-line:max-line-length
       .post<any>(environment.apiUrl + '/user/updateRole?username=' + this.selectedUser.username + '&role=' + this.selectedUser.role, this.httpOptions()).subscribe(
@@ -60,7 +66,7 @@ export class UserViewComponent implements OnInit {
     );
   }
 
-  clear($event: any): void{
+  clear(): void{
     this.users = [];
     this.getUsers();
   }

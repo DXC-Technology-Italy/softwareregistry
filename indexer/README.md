@@ -1,28 +1,28 @@
 # Software Registry Project - Indexer
 
-Il progetto Indexer permette di indicizzare i sorgenti applicativi scaricati dalla pipeline `Jenkins Software Registry Scanner`.
+This project implements source code indexing using Apache Lucene. The analyzed files have been previously downloaded by the `Jenkins Software Registry Scanner` pipeline.
 
-## Compilazione e avvio
+## Build and Run
 
-### Configurazione
+### Configuration
 
-Configurare il seguente file di properties Spring Boot:
+Before running the application it is necessary to configure the following files:
 
 - `src/main/resources/application.properties`
 
-### Avvio della applicazione
+### Run the application
 
-E' consigliabile eseguire i seguenti passi per rigenerare gli indici Lucene:
+It is recommended to execute the following steps in order to regenerate Lucene Indexes:
 
-1. Cancellare la cartella dell'indice precedentemente creata
-2. Lanciare l'applicazione
-   - java -jar <APP>.jar
-3. Riavviare il container docker del backend
+1. Remove the index directory previously created
+2. Run the java program:
+   - java -jar `APP`.jar
+3. Restart the backend docker container
 
-Esempio:
+Example:
 
 ```bash
 rm -rf /app/software-registry/index
 java -jar /app/software-registry/lucene-indexer.jar
-docker restart software-registry-backend
+docker restart software-registry-backend:2.1.0
 ```

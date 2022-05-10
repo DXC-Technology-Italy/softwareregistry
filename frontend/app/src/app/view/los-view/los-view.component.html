@@ -1,7 +1,7 @@
 <div class="content" role="main">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
       <li class="breadcrumb-item">Obiettivi di sviluppo</li>
       <li class="breadcrumb-item active" aria-current="page">Lista oggetti Software</li>
     </ol>
@@ -26,10 +26,10 @@
       <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
            data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          Per generare la Lista degli <b>Oggetti Software per un Obiettivo</b> &egrave; necessario:
+          Per generare la Lista degli <strong>Oggetti Software per un Obiettivo</strong> &egrave; necessario:
           <ul>
             <li>Che l'obiettivo sia attualmente aperto</li>
-            <li>Che i ticket di branch dell'obiettivo abbiano il campo repository nel formato <b>&lt;CODICE AREA&gt;/&lt;REPOSITORY_NAME&gt;</b>
+            <li>Che i ticket di branch dell'obiettivo abbiano il campo repository nel formato <strong>&lt;CODICE AREA&gt;/&lt;REPOSITORY_NAME&gt;</strong>
               e che il <u>repository corrisponda a quello presente su git</u>.
             </li>
           </ul>
@@ -42,8 +42,8 @@
     <div class="form-group">
       <div class="row align-items-start custom-margin">
         <div class="col-12">
-          <strong>Inserire il codice BIG di un obiettivo di sviluppo attualmente aperto</strong>
-          <input type="text" class="form-control" name="bigcode"
+          <label for="bigcode"><strong>Inserire il codice BIG di un obiettivo di sviluppo attualmente aperto</strong></label>
+          <input type="text" class="form-control" name="bigcode" id="bigcode"
                  [(ngModel)]="bigcode"
                  [value]="bigcode"/>
         </div>
@@ -52,30 +52,31 @@
     </div>
     <div class="custom-margin">
       <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search()"
-              type="button">Cerca
+              type="button">{{resourcebundle.labels.search}}
       </button>
-      <button class="btn btn-outline-danger table-buttons" (click)="clear($event)" type="button">Azzera</button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.labels.reset}}</button>
     </div>
 
   </form>
 
   <div class="alert alert-danger" role="alert" *ngIf="noResult">
-    <b>Nessun risultato ottenuto</b>
+    <strong>Nessun risultato ottenuto</strong>
   </div>
   <div class="losResult" *ngIf="losGenerated">
     <div class="download">
-      <a [routerLink]="" (click)="download($event)" type="button">Scarica il report</a>
+      <a [routerLink]="" (click)="download()" type="button">Scarica il report</a>
     </div>
-    <table class="table table-bordered" id="data_table">
+    <table class="table table-bordered" id="data_table" aria-label="Elenco Lista Oggetti Software">
+      <caption style="display:none">Elenco Lista Oggetti Software</caption>
       <thead>
       <tr>
-        <th>Nome File</th>
-        <th>Path</th>
-        <th>Repository</th>
-        <th>Area</th>
-        <th>Oggetto</th>
-        <th>Azione</th>
-        <th>Tipo Oggetto</th>
+        <th scope="col">Nome File</th>
+        <th scope="col">{{resourcebundle.labels.path}}</th>
+        <th scope="col">{{resourcebundle.labels.repository}}</th>
+        <th scope="col">{{resourcebundle.labels.area}}</th>
+        <th scope="col">{{resourcebundle.labels.object}}</th>
+        <th scope="col">{{resourcebundle.labels.action}}</th>
+        <th scope="col">Tipo Oggetto</th>
       </tr>
       </thead>
       <tbody>

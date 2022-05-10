@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from './service/auth/authentication.service';
 import {environment} from 'src/environments/environment';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-root',
@@ -8,20 +9,21 @@ import {environment} from 'src/environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Java Deps';
-  VERSION = '2.3';
+  title = 'Software Registry';
+  VERSION = '2.1.0';
   settingsDialogVisibility = 'none';
-  themes = [{ name: 'Chiaro', value: 'light' }, { name: 'Scuro', value: 'dark' } ];
-  
+  themes = [{ name: 'Light', value: 'light' }, { name: 'Dark', value: 'dark' } ];
   selectedTheme = '';
-  gitlabUrl  = environment.gitlabUrl
-  jenkinsUrl = environment.jenkinsUrl
-  sonarUrl   = environment.sonarUrl
-  nexusUrl   = environment.nexusUrl
+  gitlabUrl  = environment.gitlabUrl;
+  jenkinsUrl = environment.jenkinsUrl;
+  sonarUrl   = environment.sonarUrl;
+  nexusUrl   = environment.nexusUrl;
+  localize   = new Localize();
+  resourcebundle : any = {} 
 
   constructor(private loginService: AuthenticationService) {
     this.selectedTheme = localStorage.getItem('theme') || 'light';
-
+    this.resourcebundle = this.localize.get()
   }
   getSelectedTheme(): string {
     this.selectedTheme = this.loginService.selectedTheme();
@@ -41,15 +43,15 @@ export class AppComponent {
     localStorage.setItem('theme', this.selectedTheme);
     this.loginService.saveSelectedTheme();
   }
-  showSettingsDialog($event: any): void {
+  showSettingsDialog(): void {
     this.settingsDialogVisibility = 'block';
   }
 
-  hideSettingsDialog($event: any): void {
+  hideSettingsDialog(): void {
     this.settingsDialogVisibility = 'none';
   }
 
-  logout($event: any): void {
+  logout(): void {
     this.loginService.logOut();
   }
   isUserLoggedIn(): boolean {

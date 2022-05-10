@@ -1,10 +1,15 @@
 package com.cm.dev.service;
 
-import java.util.ArrayList;
+import com.cm.dev.exception.ServiceException;
+
+import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Interface that exposes methods to handle DependencyFiles business logic
+ */
 public interface DependencyFileService {
 
-    public HashMap<Integer, String> getAllLines() throws Exception;
+    HashMap<Integer, String> getAllLines() throws ServiceException, IOException;
 
 }

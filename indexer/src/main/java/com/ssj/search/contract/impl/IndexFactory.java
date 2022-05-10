@@ -17,6 +17,11 @@ public class IndexFactory {
 	@Qualifier("textFileIndexer")
 	private Indexer txtIndexer;
 	
+	
+	/** 
+	 * @param fileType
+	 * @return Indexer
+	 */
 	public Indexer getIndexer(FileTypesSupported fileType) {
 		logger.debug("getIndexer : Received fileType - {}",fileType);
 		switch(fileType) {

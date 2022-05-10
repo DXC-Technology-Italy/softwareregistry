@@ -1,5 +1,73 @@
-{"properties": [{
-  "name": "search.index.directory",
-  "type": "java.lang.String",
-  "description": "Default Index Directory'"
-}]}
+{
+  "properties": [
+    {
+      "name": "search.index.directory",
+      "type": "java.lang.String",
+      "description": "Default Index Directory'"
+    },
+    {
+      "name": "spring.data.mongodb.repositories.enabled",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.mongodb.repositories.enabled."
+    },
+    {
+      "name": "ldap.url",
+      "type": "java.lang.String",
+      "description": "Description for ldap.url."
+    },
+    {
+      "name": "ldap.managerDn",
+      "type": "java.lang.String",
+      "description": "Description for ldap.managerDn."
+    },
+    {
+      "name": "ldap.managerPassword",
+      "type": "java.lang.String",
+      "description": "Description for ldap.managerPassword."
+    },
+    {
+      "name": "config.gitlab.token",
+      "type": "java.lang.String",
+      "description": "Description for gitlab.token."
+    },
+    {
+      "name": "config.redmine.url",
+      "type": "java.lang.String",
+      "description": "Description for redmine.url."
+    },
+    {
+      "name": "config.nexus.url",
+      "type": "java.lang.String",
+      "description": "Description for nexus.url."
+    },
+    {
+      "name": "config.repository.path",
+      "type": "java.lang.String",
+      "description": "Description for repository.path."
+    },
+    {
+      "name": "config.dependencies.path",
+      "type": "java.lang.String",
+      "description": "Description for dependencies.path."
+    },
+    {
+      "name": "config.maven.libraries.regex",
+      "type": "java.lang.String",
+      "description": "Description for maven.libraries.regex."
+    },
+    {
+      "name": "config.maven.custom.libraries.regex",
+      "type": "java.lang.String",
+      "description": "Description for maven.custom.libraries.regex."
+    },
+    {
+      "name": "environment",
+      "type": "java.lang.String",
+      "description": "Description for environment."
+    },
+    {
+      "name": "config.gitlab.url",
+      "type": "java.lang.String",
+      "description": "Description for config.gitlab.url."
+    }
+  ]}

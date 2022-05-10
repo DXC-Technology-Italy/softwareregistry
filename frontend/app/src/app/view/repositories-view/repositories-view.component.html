@@ -2,7 +2,7 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
       <li class="breadcrumb-item">Ambiente di sviluppo</li>
       <li class="breadcrumb-item active" aria-current="page">Lista repository software</li>
     </ol>
@@ -10,13 +10,13 @@
 
   <div class="info right">
     <a href="/data/repositories.json">Scarica il report in formato testuale</a><br>
-    <a [routerLink]="" (click)="download($event)" type="button">Scarica il report in formato csv</a>
+    <a [routerLink]="" (click)="download()" type="button">Scarica il report in formato csv</a>
   </div>
 
   <form #form="ngForm">
     <div class="form-group filters">
-      <strong>Area</strong>
-      <select class="form-select" name="area"
+      <label for="area"><strong>{{resourcebundle.labels.area}}</strong></label>
+      <select class="form-select" name="area" id="area"
               [(ngModel)]="area">
         <option></option>
         <option *ngFor="let area of areas"
@@ -35,14 +35,15 @@
         Visualizza tutti i moduli
       </button>
     </div>
-    <table id="data_table" class="table table-bordered" style="table-layout: auto">
+    <table id="data_table" class="table table-bordered" style="table-layout: auto" aria-label="Elenco Repository">
+      <caption style="display:none">Elenco Repository</caption>
       <thead>
       <tr>
-        <th class="col-2">Nome</th>
-        <th class="col-1">Area</th>
-        <th class="col-1">Tipologia</th>
-        <th class="col-4">URL git</th>
-        <th class="col-4">Moduli Maven</th>
+        <th scope="col" class="col-2">{{resourcebundle.labels.name}}</th>
+        <th scope="col" class="col-1">{{resourcebundle.labels.area}}</th>
+        <th scope="col" class="col-1">{{resourcebundle.labels.typology}}</th>
+        <th scope="col" class="col-4">URL git</th>
+        <th scope="col" class="col-4">Moduli Maven</th>
       </tr>
       </thead>
       <tbody>
@@ -52,14 +53,15 @@
         <td class="col-1">{{ repository.kind }}</td>
         <td class="col-4"><a href="{{ repository.url }}">{{ repository.url }}</a></td>
         <td class="col-4">
-          <!--            <div class="pre">{{ repository.projects }}</div>-->
           <div *ngIf="repository.kind == 'Java' && repository.projects.length > 0">
             <a class="modules-link" data-bs-toggle="collapse"
                href="#collapse{{ repository.area }}_{{ repository.name }}" role="button" aria-expanded="false">
-              <i class="bi bi-card-list"></i> Visualizza moduli
+              <em class="bi bi-card-list"></em> Visualizza moduli
             </a>
             <div class="collapse collapse-item" id="collapse{{ repository.area }}_{{ repository.name }}">
-              <table class="table modules-table table-sm">
+              <table class="table modules-table table-sm" aria-label="Elenco Moduli Maven">
+                <caption style="display:none">Elenco Moduli Maven:</caption>
+                <thead style="display:none"><tr><th scope="col"></th></tr></thead>
                 <tbody>
                 <tr *ngFor="let rep of repository.projects">
                   <td class="col">{{ rep.name }}</td>

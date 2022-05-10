@@ -2,16 +2,23 @@ package com.cm.dev.service;
 
 import com.cm.dev.bean.MatchedDependency;
 import com.cm.dev.domain.Project;
-import org.springframework.stereotype.Service;
+import com.cm.dev.exception.ServiceException;
 
+import java.io.IOException;
 import java.util.List;
 
+/**
+ * Interface that exposes methods to handle Projects business logic
+ */
 public interface ProjectService {
 
-    public List<Project> getAllProjects() throws Exception;
-    public List<Project> getAllProjectsWithoutDependencies() throws Exception;
-    public void reload() throws Exception;
-    public List<String> getDistinctProjects() throws Exception;;
+    List<Project> getAllProjects() throws ServiceException;
 
-    List<MatchedDependency> checkDependencies(String projectName) throws Exception;
+    List<Project> getAllProjectsWithoutDependencies() throws ServiceException;
+
+    void reload() throws ServiceException, IOException;
+
+    List<String> getDistinctProjects() throws ServiceException;
+
+    List<MatchedDependency> checkDependencies(String projectName) throws ServiceException;
 }

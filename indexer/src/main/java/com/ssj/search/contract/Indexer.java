@@ -20,7 +20,6 @@ import java.util.concurrent.ForkJoinPool;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.core.WhitespaceTokenizerFactory;
 import org.apache.lucene.analysis.custom.CustomAnalyzer;
 import org.apache.lucene.index.IndexWriter;

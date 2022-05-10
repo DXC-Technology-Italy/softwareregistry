@@ -2,15 +2,12 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item">Impostazioni</li>
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.details}}</li>
       <li class="breadcrumb-item active" aria-current="page">Lista User</li>
     </ol>
   </nav>
 
-  <!--  <div class="info right">-->
-  <!--    <a [routerLink]="" (click)="download($event)" type="button">Scarica il report in formato csv</a>-->
-  <!--  </div>-->
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
        aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -28,18 +25,18 @@
               <div class="row align-items-start">
                 <div class="col-12">
                   <div class="mb-3">
-                    <b>Username</b>: {{ selectedUser.username }}
+                    <strong>{{resourcebundle.labels.username}}</strong>: {{ selectedUser.username }}
                   </div>
                   <hr/>
                 </div>
               </div>
               <div class="row align-items-start">
                 <div class="col-12">
-                  <strong>Ruolo</strong>
-                  <select class="form-select" name="role" (change)="changeModel($event)"
+                  <label for="role"><strong>{{resourcebundle.labels.role}}</strong></label>
+                  <select class="form-select" name="role" (change)="changeModel($event)" id="role"
                           [(ngModel)]="selectedUser.role">
-                    <option value="USER">User</option>
-                    <option value="ADMIN">Admin</option>
+                    <option value="USER">{{resourcebundle.labels.user}}</option>
+                    <option value="ADMIN">{{resourcebundle.labels.admin}}</option>
                   </select>
                 </div>
               </div>
@@ -48,10 +45,10 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clear($event)">Chiudi
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clear()">{{resourcebundle.labels.close}}
           </button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                  (click)="saveChange($event)">Salva
+                  (click)="saveChange()">{{resourcebundle.labels.save}}
           </button>
         </div>
       </div>
@@ -59,12 +56,13 @@
   </div>
   <form #form="ngForm">
     <div class="table-responsive">
-      <table class="table table-bordered table-sm align-middle" style="table-layout: auto">
+      <table class="table table-bordered table-sm align-middle" aria-label="Elenco Utenti" style="table-layout: auto">
+        <caption style="display:none">Elenco Utenti</caption>
         <thead>
         <tr>
-          <th><span class="ms-2">Username</span></th>
-          <th><span class="ms-2">Ruolo</span></th>
-          <th></th>
+          <th scope="col"><span class="ms-2">{{resourcebundle.labels.username}}</span></th>
+          <th scope="col"><span class="ms-2">{{resourcebundle.labels.role}}</span></th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -73,8 +71,8 @@
           <td class="col-5"><span class="ms-2">{{ user.role }}</span></td>
           <td class="text-center">
             <button type="button" class="btn btn-outline-primary table-buttons" data-bs-toggle="modal"
-                    (click)="setSelectedUser($event, i)" data-bs-target="#editModal">
-              <i class="bi bi-pencil-square"></i>
+                    (click)="setSelectedUser(i)" data-bs-target="#editModal">
+              <em class="bi bi-pencil-square"></em>
             </button>
           </td>
         </tr>

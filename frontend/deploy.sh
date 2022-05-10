@@ -5,18 +5,18 @@ export PATH=$PATH:/opt/node/bin
 # START CONFIGURATION
 NAME=
 GROUP=
-TAG=latest
+TAG=
 EXTERNAL_PORT=8181
 INTERNAL_PORT=80
 DATA_HOME=
 # END CONFIGURATION
 
-echo "Stopping running instances..."
-docker stop ${NAME} && docker rm ${NAME} && docker rmi ${GROUP}/${NAME}:${TAG}
-echo "Done..."
-
 echo "Building angular code"
 ANGULAR_BUILD="$(cd app && npm i && ng build --prod)"
+echo "Done..."
+
+echo "Stopping running instances..."
+docker stop ${NAME} && docker rm ${NAME} && docker rmi ${GROUP}/${NAME}:${TAG}
 echo "Done..."
 
 echo "Building Docker image"

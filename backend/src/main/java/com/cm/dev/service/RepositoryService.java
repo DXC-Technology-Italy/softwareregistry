@@ -1,16 +1,25 @@
 package com.cm.dev.service;
 
 import com.cm.dev.domain.Repository;
+import com.cm.dev.exception.ServiceException;
 
+import java.io.IOException;
 import java.util.List;
 
+/**
+ * Interface that exposes methods to handle Repositories business logic
+ */
 public interface RepositoryService {
 
-    public List<Repository> getAllRepositories() throws Exception;
-    public List<Repository> getRepositoriesFromArea(String code) throws Exception;
-    public List<String> getRepositoriesByKind(String kind) throws Exception;
+    List<Repository> getAllRepositories() throws ServiceException;
 
-    public void reload() throws Exception;
-    public List<String> getDistinctRepositories() throws Exception;
-    public List<Repository> getAllOrdered(List<String> orderFields) throws Exception;
+    List<Repository> getRepositoriesFromArea(String code) throws ServiceException;
+
+    List<String> getRepositoriesByKind(String kind) throws ServiceException;
+
+    void reload() throws ServiceException, IOException;
+
+    List<String> getDistinctRepositories() throws ServiceException;
+
+    List<Repository> getAllOrdered(List<String> orderFields) throws ServiceException;
 }

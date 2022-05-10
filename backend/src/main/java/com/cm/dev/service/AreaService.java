@@ -1,15 +1,18 @@
 package com.cm.dev.service;
 
 import com.cm.dev.domain.Area;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.cm.dev.exception.ServiceException;
 
 import java.util.List;
 
-
+/**
+ * Interface that exposes methods to handle Areas business logic
+ */
 public interface AreaService {
 
-    public List<Area> getAllAreas() throws Exception;
-    public Area getByCode(String code) throws Exception;
-    public List<String> getDistinctAreas() throws Exception;;
+    List<Area> getAllAreas() throws ServiceException;
+
+    List<String> getDistinctAreas() throws ServiceException;
+
+
 }

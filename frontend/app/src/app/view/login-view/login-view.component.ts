@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService} from 'src/app/service/auth/authentication.service';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-login-view',
   templateUrl: './login-view.component.html',
   styleUrls: ['./login-view.component.css']
 })
-export class LoginViewComponent implements OnInit {
+export class LoginViewComponent {
 
+  resourcebundle : any = {};
   username: string;
   password: string;
   invalidLogin: boolean;
@@ -23,10 +25,12 @@ export class LoginViewComponent implements OnInit {
     if (this.loginService.isUserLoggedIn()) {
       this.router.navigate(['']);
     }
+    var localize = new Localize()
+    this.resourcebundle = localize.get()
 
   }
 
-  login($event: any): void {
+  login(): void {
     (this.loginService.authenticate(this.username, this.password).subscribe(
         data => {
           if (data.authenticated === true) {
@@ -39,7 +43,7 @@ export class LoginViewComponent implements OnInit {
             this.error = 'Si è verificato un errore durante il login';
           }
         },
-        error => {
+        () => {
           this.invalidLogin = true;
           this.error = 'Username o password errati';
         }
@@ -47,7 +51,5 @@ export class LoginViewComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-  }
 
 }

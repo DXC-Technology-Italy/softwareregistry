@@ -1,17 +1,24 @@
 package com.cm.dev.service.impl;
 
-import com.cm.dev.dao.AreaDAO;
 import com.cm.dev.dao.ProjectDAO;
 import com.cm.dev.dao.RepositoryDAO;
-import com.cm.dev.domain.Area;
 import com.cm.dev.domain.Project;
 import com.cm.dev.domain.Repository;
+import com.cm.dev.exception.ServiceException;
+import com.cm.dev.service.PlainFileReaderService;
 import com.cm.dev.service.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+
+/**
+ * Business Logic for Repository Objects
+ * 
+ */
 @Service
 public class RepositoryServiceImpl implements RepositoryService {
 
@@ -22,34 +29,61 @@ public class RepositoryServiceImpl implements RepositoryService {
     private ProjectDAO projectDAO;
 
     @Autowired
-    private AreaDAO areaDAO;
+    PlainFileReaderService plainFileReaderService;
 
+    
+    /** 
+     * @return List<Repository>
+     * @throws ServiceException
+     */
     @Override
-    public List<Repository> getAllRepositories() throws Exception{
+    public List<Repository> getAllRepositories() throws ServiceException {
         return repositoryDAO.getAll();
     }
 
+    
+    /** 
+     * @param orderFields
+     * @return List<Repository>
+     * @throws ServiceException
+     */
     @Override
-    public List<Repository> getAllOrdered(List<String> orderFields) throws Exception{
+    public List<Repository> getAllOrdered(List<String> orderFields) throws ServiceException {
         return repositoryDAO.getAllOrdered(orderFields);
     }
 
+    
+    /** 
+     * @param code
+     * @return List<Repository>
+     * @throws ServiceException
+     */
     @Override
-    public List<Repository> getRepositoriesFromArea(String code) throws Exception {
+    public List<Repository> getRepositoriesFromArea(String code) throws ServiceException {
         return repositoryDAO.getRepositoriesFromArea(code);
     }
 
+    
+    /** 
+     * @param kind
+     * @return List<String>
+     * @throws ServiceException
+     */
     @Override
-    public List<String> getRepositoriesByKind(String kind) throws Exception {
+    public List<String> getRepositoriesByKind(String kind) throws ServiceException {
         return repositoryDAO.getRepositoriesByKind(kind);
     }
 
+    
+    /** 
+     * @throws ServiceException
+     * @throws IOException
+     */
     @Override
-    public void reload() throws Exception {
+    public void reload() throws ServiceException, IOException {
         List<Repository> repositories = new ArrayList<>();
-        Area area = new Area();
 
-        for( Repository r: PlainFileReaderServiceImpl.getInstance().getRepositories().values() ) {
+        for (Repository r : plainFileReaderService.getRepositories().values()) {
 
             List<Project> projects = projectDAO.getByRepository(r.getName());
             r.setProjects(projects);
@@ -60,8 +94,13 @@ public class RepositoryServiceImpl implements RepositoryService {
         repositoryDAO.createMany(repositories);
     }
 
+    
+    /** 
+     * @return List<String>
+     * @throws ServiceException
+     */
     @Override
-    public List<String> getDistinctRepositories() throws Exception {
+    public List<String> getDistinctRepositories() throws ServiceException {
         return repositoryDAO.getDistinctRepositories();
     }
 

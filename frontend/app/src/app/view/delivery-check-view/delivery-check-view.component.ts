@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from '../../service/auth/authentication.service';
 import {DownloadService} from '../../service/util/download.service';
 import {ActivatedRoute} from '@angular/router';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-delivery-check-view',
@@ -11,6 +12,9 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./delivery-check-view.component.css']
 })
 export class DeliveryCheckViewComponent implements OnInit {
+
+  resourcebundle : any = {};
+
   bigcode = '';
   deliveryCheckGenerated = false;
   noResult = false;
@@ -21,6 +25,8 @@ export class DeliveryCheckViewComponent implements OnInit {
 
   constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService,
               private route: ActivatedRoute) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()
   }
 
   ngOnInit(): void {
@@ -32,7 +38,7 @@ export class DeliveryCheckViewComponent implements OnInit {
     });
   }
 
-  clear($event: any): void {
+  clear(): void {
     this.bigcode = '';
     this.noResult = false;
     this.deliveryCheckGenerated = false;
@@ -60,7 +66,7 @@ export class DeliveryCheckViewComponent implements OnInit {
     });
   }
 
-  download($event: any, i: number): void {
+  download(i: number): void {
 
     const filename = 'MEV-NP-DeliveryCheck-' + this.bigcode + '.csv';
     this.downloadService.downloadUtil(filename, 'data_table-' + i);

@@ -4,6 +4,7 @@ import {environment} from 'src/environments/environment';
 import {AuthenticationService} from 'src/app/service/auth/authentication.service';
 import {DownloadService} from '../../service/util/download.service';
 import {ActivatedRoute} from '@angular/router';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-los-view',
@@ -12,6 +13,8 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class LosViewComponent implements OnInit {
 
+  resourcebundle : any = {};
+
   bigcode = '';
   losGenerated = false;
   noResult = false;
@@ -19,7 +22,9 @@ export class LosViewComponent implements OnInit {
   matches: Array<Match> = [];
 
   constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService,
-              private route: ActivatedRoute) {
+    private route: ActivatedRoute) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()                
   }
 
   ngOnInit(): void {
@@ -31,7 +36,7 @@ export class LosViewComponent implements OnInit {
     });
   }
 
-  clear($event: any): void {
+  clear(): void {
     this.bigcode = '';
     this.noResult = false;
     this.losGenerated = false;
@@ -59,8 +64,8 @@ export class LosViewComponent implements OnInit {
     });
   }
 
-  download($event: any): void {
-    const filename = 'MEV-NP-LOS-' + this.bigcode + '.csv';
+  download(): void {
+    const filename = 'NoiPA1-MEV-NP-LOS-' + this.bigcode + '.csv';
     this.downloadService.downloadUtil(filename, 'data_table');
   }
 }
@@ -79,7 +84,7 @@ class Match {
     this.name = name;
     this.path = path;
     this.repository = repository;
-    this.area = 'area' + bigcode.substr(5, 4);
+    this.area = 'area' + bigcode.substring(5, 4);
     if (action === 'ADDED') {
       this.action = 'Aggiunto';
     }

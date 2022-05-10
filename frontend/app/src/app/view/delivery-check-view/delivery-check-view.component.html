@@ -1,7 +1,7 @@
 <div class="content" role="main">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
       <li class="breadcrumb-item">Obiettivi di sviluppo</li>
       <li class="breadcrumb-item active" aria-current="page">Delivery Check</li>
     </ol>
@@ -11,8 +11,8 @@
     <div class="form-group">
       <div class="row align-items-start custom-margin">
         <div class="col-12">
-          <strong>Inserire il codice BIG di un obiettivo</strong>
-          <input type="text" class="form-control" name="bigcode"
+          <label for="bigcode"><strong>Inserire il codice BIG di un obiettivo</strong></label>
+          <input type="text" class="form-control" name="bigcode" id="bigcode"
                  [(ngModel)]="bigcode"
                  [value]="bigcode"/>
         </div>
@@ -21,15 +21,15 @@
     </div>
     <div class="custom-margin">
       <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search()"
-              type="button">Cerca
+              type="button">{{resourcebundle.labels.search}}
       </button>
-      <button class="btn btn-outline-danger table-buttons" (click)="clear($event)" type="button">Azzera</button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.labels.reset}}</button>
     </div>
 
   </form>
 
   <div class="alert alert-danger" role="alert" *ngIf="noResult">
-    <b>Nessun risultato ottenuto</b>
+    <strong>Nessun risultato ottenuto</strong>
   </div>
   <div class="losResult" *ngIf="deliveryCheckGenerated">
 
@@ -41,7 +41,7 @@
           <p class="pb-3 mb-0 larger lh-sm">
             <a data-bs-toggle="collapse" href="#collapse-{{i}}" role="button"
                aria-expanded="false" (click)="setSelectedRelease(i)">
-              <strong class="d-block text-gray-dark"><span>Merge Request di <b>{{release.mergeRequestType}}</b></span>
+              <strong class="d-block text-gray-dark"><span>Merge Request di <strong>{{release.mergeRequestType}}</strong></span>
                 <span style="float: right">{{release.date | slice:0:10}} {{release.date | slice:12:-1}}</span></strong>
             </a>
           </p>
@@ -52,10 +52,11 @@
             <div class="custom-card card-body custom-margin table-responsive">
               La richiesta di Merge è stata presentata da <strong>{{release.author}}</strong> e ha generato i seguenti url
               nexus:<br>
-              <table class="table">
+              <table class="table" aria-label="Elenco rilasci">
+                <caption style="display:none">Url Nexus</caption>
                 <thead>
                 <tr>
-                  <th class="text-center">Url Nexus</th>
+                  <th scope="col" class="text-center">Url Nexus</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,13 +66,14 @@
                 </tbody>
               </table>
 
-              <table class="table" id="data_table-{{i}}">
+              <table class="table" id="data_table-{{i}}" aria-label="Elenco Items Rilasciati">
+                <caption style="display:none">Elenco Items Rilasciati</caption>
                 <thead>
                 <tr>
-                  <th>Nome File</th>
-                  <th>Repository</th>
-                  <th>Sha1sum</th>
-                  <th>Path macchina MEF</th>
+                  <th scope="col">Nome File</th>
+                  <th scope="col">{{resourcebundle.labels.repository}}</th>
+                  <th scope="col">{{resourcebundle.labels.sha1sum}}</th>
+                  <th scope="col">Path macchina MEF</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,7 +87,7 @@
               </table>
             </div>
             <div class="download">
-              <a [routerLink]="" (click)="download($event, i)" type="button">Scarica il report</a>
+              <a [routerLink]="" (click)="download(i)" type="button">Scarica il report</a>
             </div>
           </div>
 

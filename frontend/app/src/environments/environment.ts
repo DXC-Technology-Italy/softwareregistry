@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: "",
-  gitlabUrl: "",
-  jenkinsUrl: "",
-  nexusUrl: "",
-  sonarUrl: "",
-  softwareRegistryPath: ""
+  apiUrl: 'http://localhost:8080',
+  gitlabUrl: '',
+  jenkinsUrl: '',
+  nexusUrl: '',
+  sonarUrl: '',
+  softwareRegistryPath: ''
 };

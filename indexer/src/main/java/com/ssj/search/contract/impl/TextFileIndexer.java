@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,6 +99,10 @@ public class TextFileIndexer implements Indexer {
     }
 
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getIndexDirectoryPath() {
         return indexPath;

@@ -2,9 +2,9 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
       <li class="breadcrumb-item">Progetti Java</li>
-      <li class="breadcrumb-item active" aria-current="page">Dipendenze</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.labels.dependencies}}</li>
     </ol>
   </nav>
 
@@ -12,18 +12,18 @@
     <a href="/data/dependencies.txt">Scarica il report in formato testuale</a>
   </div>
   <fieldset class="fieldSetMaxLib">
-    <legend>Ricerca massima versione librerie progetto</legend>
+    <label for="searchMaxVersion"><legend>Ricerca massima versione librerie progetto</legend></label>
     <div class="input-group">
       <input type="text" class="form-control" id="searchMaxVersion"
-             (keydown.enter)="onSearchMaxVersion($event);showTempLib($event)"
+             (keydown.enter)="onSearchMaxVersion();showTempLib()"
              placeholder="Inserire il nome di un progetto per controllare l'esistenza di librerie più aggiornate."
              aria-label="Inserire il nome di un progetto per controllare l'esistenza di librerie più aggiornate.">
-      <button class="btn btn-outline-primary" (click)="onSearchMaxVersion($event)" type="button">Cerca</button>
-      <button class="btn btn-outline-secondary" (click)="onSearchMaxVersionClean($event)" type="button">Cancella
+      <button class="btn btn-outline-primary" (click)="onSearchMaxVersion()" type="button">{{resourcebundle.labels.search}}</button>
+      <button class="btn btn-outline-secondary" (click)="onSearchMaxVersionClean()" type="button">{{resourcebundle.labels.reset}}
       </button>
     </div>
     <div class="searchTemporaryLibsBox">
-      <input class="form-check-input" type="checkbox" id="isShownTempLib" (change)="showTempLib($event)">
+      <input class="form-check-input" type="checkbox" id="isShownTempLib" (change)="showTempLib()">
       <label class="form-check-label" for="isShownTempLib" style="padding-left: 10px">
         Mostra librerie temporanee
       </label>
@@ -32,11 +32,11 @@
   <fieldset>
     <legend>Ricerca progetti che usano una libreria</legend>
     <div class="input-group">
-      <input type="text" class="form-control" id="depsSearch" (keydown.enter)="onSearch($event)"
+      <input type="text" class="form-control" id="depsSearch" (keydown.enter)="onSearch()"
              placeholder="Inserire il nome di una libreria. Ad esempio RepositoryClient."
              aria-label="Inserire il nome di una libreria. Ad esempio RepositoryClient.">
-      <button class="btn btn-outline-primary" (click)="onSearch($event)" type="button">Cerca</button>
-      <button class="btn btn-outline-secondary" (click)="onSearchClean($event)" type="button">Cancella</button>
+      <button class="btn btn-outline-primary" (click)="onSearch()" type="button">{{resourcebundle.labels.search}</button>
+      <button class="btn btn-outline-secondary" (click)="onSearchClean()" type="button">{{resourcebundle.labels.reset}}</button>
     </div>
 
   </fieldset>
@@ -44,14 +44,15 @@
   <hr/>
   <div class="searchResult" *ngIf="searchingMaxVersion">
     <div class="bold">Risultati:</div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" aria-label="Risultati Ricerca">
+      <caption style="display:none">Risultati Ricerca</caption>
       <thead>
       <tr>
-        <th>Libreria</th>
-        <th>Versione</th>
-        <th>GroupId</th>
-        <th>Parent</th>
-        <th>Versione attuale</th>
+        <th scope="col">{{resourcebundle.labels.library}}</th>
+        <th scope="col">{{resourcebundle.labels.version}}</th>
+        <th scope="col">{{resourcebundle.labels.groupid}}</th>
+        <th scope="col">{{resourcebundle.labels.parent}}</th>
+        <th scope="col">Versione attuale</th>
       </tr>
       </thead>
       <tbody>
@@ -66,14 +67,15 @@
     </table>
     <ng-container *ngIf="isShownTempLib">
       <div class="bold">Librerie temporanee:</div>
-      <table class="table table-bordered">
+      <table class="table table-bordered" aria-label="Risultati Ricerca Temp Lib">
+        <caption style="display:none">Risultati Ricerca Temp Lib</caption>
         <thead>
         <tr>
-          <th>Libreria</th>
-          <th>Versione</th>
-          <th>GroupId</th>
-          <th>Parent</th>
-          <th>Versione attuale</th>
+          <th scope="col">{{resourcebundle.labels.library}}</th>
+          <th scope="col">{{resourcebundle.labels.version}}</th>
+          <th scope="col">{{resourcebundle.labels.groupid}}</th>
+          <th scope="col">{{resourcebundle.labels.parent}}</th>
+          <th scope="col">Versione attuale</th>
         </tr>
         </thead>
         <tbody>
@@ -91,14 +93,15 @@
   </div>
   <div class="searchResult" *ngIf="searching">
     <div class="bold">Risultati:</div>
-    <table class="table table-bordered">
+    <table class="table table-bordered" aria-label="Risultati Ricerca">
+      <caption style="display:none">Risultati Ricerca</caption>
       <thead>
       <tr>
-        <th>Progetto</th>
-        <th>Libreria</th>
-        <th>Versione</th>
-        <th>Gruppo</th>
-        <th>Link Nexus</th>
+        <th scope="col">{{resourcebundle.labels.project}}</th>
+        <th scope="col">{{resourcebundle.labels.library}}</th>
+        <th scope="col">{{resourcebundle.labels.version}}</th>
+        <th scope="col">{{resourcebundle.labels.group}}</th>
+        <th scope="col">Link Nexus</th>
       </tr>
       </thead>
       <tbody>

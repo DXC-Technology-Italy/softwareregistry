@@ -1,24 +1,25 @@
 # Software Registry - Front End Project
 
-## Compilazione e avvio
+Front End to the application.
 
-### Configurazione
+## Build and Run
 
-Configurare i seguenti files Angular prima di avviare l'applicazione:
+### Configuration
+
+Before running the application it is necessary to configure the following files:
 
 - `app/src/environments/environment.dev.ts`
 - `app/src/environments/environment.prod.ts`
 - `app/src/environments/environment.ts`
 
-### Avvio della applicazione
+### Run the application
 
-Configurare il file "deploy.sh" e avviarlo. Comandi invocati:
+Configure the file `deploy.sh` and run it. The script will basically do the following:
 
-```bash
-docker build -t ${GROUP}/${NAME}:${TAG} .
-docker run --name ${NAME} -p ${EXTERNAL_PORT}:${INTERNAL_PORT} -d -v ${DATA_HOME}:/usr/share/nginx/html/data ${GROUP}/${NAME}:${TAG}
-```
+- Build the code
+- Build a docker image based on nginx
+- Run the docker image
 
-## Per avviare il progetto in modalità di sviluppo
+## Run the project in development mode
 
 `ng serve --configuration=dev`

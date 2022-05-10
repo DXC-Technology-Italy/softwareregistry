@@ -61,8 +61,7 @@ export class AuthenticationService {
     const loginDate: string = localStorage.getItem('loginDate') || '0';
     const now: Date = new Date();
     // tslint:disable-next-line:radix
-    const diffMs = (now.getTime() - parseInt(loginDate)); // milliseconds
-    // let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000);
+    const diffMs = (now.getTime() - parseInt(loginDate));
     const diffDays = diffMs / 1000 / 60 / 60 / 24;
 
     if (diffDays >= 1) {

@@ -20,12 +20,21 @@ public class LuceneIndexerApplication implements CommandLineRunner {
     @Value("${search.index.sourcesDirectory}")
     private String sourcesDirectory;
 
+    
+    /** 
+     * @param args
+     */
     public static void main(String[] args) {
         logger.info("STARTING THE APPLICATION");
         SpringApplication.run(LuceneIndexerApplication.class, args);
         logger.info("APPLICATION FINISHED");
     }
 
+    
+    /** 
+     * @param args
+     * @throws Exception
+     */
     @Override
     public void run(String... args) throws Exception {
         logger.info("EXECUTING : command line runner");

@@ -2,8 +2,8 @@
 
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item">Ricerca</li>
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.search}}</li>
       <li class="breadcrumb-item active" aria-current="page">Cerca in tutti i sorgenti</li>
     </ol>
   </nav>
@@ -13,20 +13,20 @@
     <div class="form-group">
       <div class="row align-items-start custom-margin">
         <div class="col-4">
-          <strong>Testo da cercare</strong>
-          <input type="text" class="form-control" name="keyword" (keydown.enter)="search($event)"
+          <label for="keyword"><strong>Testo da cercare</strong></label>
+          <input id="keyword" type="text" class="form-control" name="keyword" (keydown.enter)="search()"
                  [(ngModel)]="keyword"
                  [value]="keyword"/>
         </div>
         <div class="col-3">
-          <strong>Filename in cui cercare</strong>
-          <input type="text" class="form-control" name="filename"
+          <label for="filename"><strong>Filename in cui cercare</strong></label>
+          <input type="text" class="form-control" name="filename" id="filename"
                  [(ngModel)]="filename"
                  [value]="filename"/>
         </div>
         <div class="col-2">
-          <strong>Tipologia</strong>
-          <select class="form-select" name="type"
+          <label for="type"><strong>{{resourcebundle.labels.typology}}</strong></label>
+          <select class="form-select" name="type" id="type"
                   [(ngModel)]="type">
             <option></option>
             <option *ngFor="let type of types"
@@ -34,8 +34,8 @@
           </select>
         </div>
         <div class="col-2">
-          <strong>Limite risultati esposti</strong>
-          <input type="text" class="form-control" name="limitResult"
+          <label for="limitResult"><strong>Limite risultati esposti</strong></label>
+          <input type="text" class="form-control" name="limitResult" id="limitResult"
                  [(ngModel)]="limitResult"
                  [value]="limitResult"/>
         </div>
@@ -50,8 +50,8 @@
       </div>
       <div class="row align-items-start custom-margin">
         <div class="col">
-          <strong>Area</strong>
-          <select class="form-select" name="area"
+          <label for="area"><strong>{{resourcebundle.labels.area}}</strong></label>
+          <select class="form-select" name="area" id="area"
                   [(ngModel)]="area">
             <option></option>
             <option *ngFor="let area of areas"
@@ -59,8 +59,8 @@
           </select>
         </div>
         <div class="col">
-          <strong>Repository</strong>
-          <select class="form-select" name="repository"
+          <label for="repository"><strong>{{resourcebundle.labels.repository}}</strong></label>
+          <select class="form-select" name="repository" id="repository"
                   [(ngModel)]="repository">
             <option></option>
             <option *ngFor="let repository of repositories"
@@ -68,8 +68,8 @@
           </select>
         </div>
         <div class="col">
-          <strong>Progetto</strong>
-          <select class="form-select" name="project"
+          <label for="project"><strong>{{resourcebundle.labels.project}}</strong></label>
+          <select class="form-select" name="project" id="project"
                   [(ngModel)]="project">
             <option></option>
             <option *ngFor="let project of projects"
@@ -77,8 +77,8 @@
           </select>
         </div>
         <div class="col">
-          <strong>Estensione</strong>
-          <select class="form-select" name="extension"
+          <label for="extension"><strong>{{resourcebundle.labels.extension}}</strong></label>
+          <select class="form-select" name="extension" id="extension"
                   [(ngModel)]="extension">
             <option></option>
             <option *ngFor="let extension of extensions"
@@ -91,37 +91,38 @@
       Numero risultati: <span>{{rowCount}}</span>
     </div>
     <div class="custom-margin">
-      <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search($event)" type="button">Cerca</button>
-      <button class="btn btn-outline-danger table-buttons" (click)="clear($event)" type="button">Azzera Filtri</button>
+      <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search()" type="button">{{resourcebundle.labels.search}}</button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">Azzera Filtri</button>
     </div>
     <div class="download" *ngIf="results.length > 0">
-      <a [routerLink]="" (click)="download($event)" type="button">Scarica il report</a>
+      <a [routerLink]="" (click)="download()" type="button">Scarica il report</a>
     </div>
-    <table class="table table-bordered" id="data_table">
+    <table class="table table-bordered" id="data_table"  aria-label="Risultati Ricerca">
+      <caption style="display:none">Risultati Ricerca</caption>
       <thead>
       <tr>
         <th scope = "col" [appSort]="results" data-name="area" (click)="setOrder('area')">
-          Area
-          <i *ngIf=" columnsOrder.get('area') == 'desc'" class="bi bi-arrow-down float-right"></i>
-          <i *ngIf=" columnsOrder.get('area') == 'asc'" class="bi bi-arrow-up float-right"></i>
+          {{resourcebundle.labels.area}}
+          <em *ngIf=" columnsOrder.get('area') == 'desc'" class="bi bi-arrow-down float-right"></em>
+          <em *ngIf=" columnsOrder.get('area') == 'asc'" class="bi bi-arrow-up float-right"></em>
         </th>
         <th scope = "col" [appSort]="results" data-name="repository" (click)="setOrder('repository')">
-          Repository
-          <i *ngIf=" columnsOrder.get('repository') == 'desc'" class="bi bi-arrow-down float-right"></i>
-          <i *ngIf=" columnsOrder.get('repository') == 'asc'" class="bi bi-arrow-up float-right"></i>
+          {{resourcebundle.labels.repository}}
+          <em *ngIf=" columnsOrder.get('repository') == 'desc'" class="bi bi-arrow-down float-right"></em>
+          <em *ngIf=" columnsOrder.get('repository') == 'asc'" class="bi bi-arrow-up float-right"></em>
         </th>
         <th scope = "col" [appSort]="results" data-name="project" (click)="setOrder('project')">
-          Progetto
-          <i *ngIf=" columnsOrder.get('project') == 'desc'" class="bi bi-arrow-down float-right"></i>
-          <i *ngIf=" columnsOrder.get('project') == 'asc'" class="bi bi-arrow-up float-right"></i>
+          {{resourcebundle.labels.project}}
+          <em *ngIf=" columnsOrder.get('project') == 'desc'" class="bi bi-arrow-down float-right"></em>
+          <em *ngIf=" columnsOrder.get('project') == 'asc'" class="bi bi-arrow-up float-right"></em>
         </th>
-        <th scope = "col" [appSort]="results" data-name="kind" (click)="setOrder('kind')">Tipo
-          <i *ngIf=" columnsOrder.get('kind') == 'desc'" class="bi bi-arrow-down float-right"></i>
-          <i *ngIf=" columnsOrder.get('kind') == 'asc'" class="bi bi-arrow-up float-right"></i>
+        <th scope = "col" [appSort]="results" data-name="kind" (click)="setOrder('kind')">{{resourcebundle.labels.type}}
+          <em *ngIf=" columnsOrder.get('kind') == 'desc'" class="bi bi-arrow-down float-right"></em>
+          <em *ngIf=" columnsOrder.get('kind') == 'asc'" class="bi bi-arrow-up float-right"></em>
         </th>
-        <th scope = "col" [appSort]="results" data-name="file" (click)="setOrder('file')">File
-          <i *ngIf=" columnsOrder.get('file') == 'desc'" class="bi bi-arrow-down float-right"></i>
-          <i *ngIf=" columnsOrder.get('file') == 'asc'" class="bi bi-arrow-up float-right"></i>
+        <th scope = "col" [appSort]="results" data-name="file" (click)="setOrder('file')">{{resourcebundle.labels.file}}
+          <em *ngIf=" columnsOrder.get('file') == 'desc'" class="bi bi-arrow-down float-right"></em>
+          <em *ngIf=" columnsOrder.get('file') == 'asc'" class="bi bi-arrow-up float-right"></em>
         </th>
       </tr>
       </thead>

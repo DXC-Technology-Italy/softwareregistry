@@ -1,15 +1,25 @@
 package com.cm.dev.dao;
 
+import com.mongodb.MongoException;
+
 import java.util.Collection;
 import java.util.List;
 
-public interface GenericDAO<T> {
-    public T create(T entity) throws Exception;
-    public Collection<T> createMany(List<T> entities) throws Exception;
-    public void delete(T entity) throws Exception;
-    public void deleteAll() throws Exception;
+/**
+ * Exposes basic CRUD operations
+ */
 
-    public T save(T entity) throws Exception;
-    public List<T> getAll() throws Exception;
+public interface GenericDAO<T> {
+    T create(T entity) throws MongoException;
+
+    Collection<T> createMany(List<T> entities) throws MongoException;
+
+    void delete(T entity) throws MongoException;
+
+    void deleteAll() throws MongoException;
+
+    T save(T entity) throws MongoException;
+
+    List<T> getAll() throws MongoException;
 
 }

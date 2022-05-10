@@ -1,4 +1,6 @@
-
+.content {
+  margin-top: 50px;
+}
 .card {
   margin-top: 20px;
   height: 380px;

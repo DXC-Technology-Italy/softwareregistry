@@ -17,12 +17,24 @@ public class DocumentIndexAttribute {
 	private Path file;
 	private long millis;
 	
+	
+	/** 
+	 * @return IndexWriter
+	 */
 	public IndexWriter getWriter() {
 		return writer;
 	}
+	
+	/** 
+	 * @return Path
+	 */
 	public Path getFile() {
 		return file;
 	}
+	
+	/** 
+	 * @return long
+	 */
 	public long getMillis() {
 		return millis;
 	}	

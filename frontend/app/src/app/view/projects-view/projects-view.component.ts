@@ -4,6 +4,7 @@ import {AuthenticationService} from 'src/app/service/auth/authentication.service
 import {environment} from 'src/environments/environment';
 import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {DownloadService} from '../../service/util/download.service';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-projects-info-view',
@@ -13,7 +14,11 @@ import {DownloadService} from '../../service/util/download.service';
 export class ProjectsViewComponent implements OnInit {
 
   constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()    
   }
+
+  resourcebundle : any = {};
 
   area = '';
   repository = '';
@@ -96,13 +101,13 @@ export class ProjectsViewComponent implements OnInit {
     return index;
   }
 
-  downloadReport($event: any): void {
+  downloadReport(): void {
     const filename = 'ListaProgetti.csv';
     this.downloadService.downloadUtil(filename, 'data_table');
   }
 
 
-  setSelectedProject($event: any, i: any, isModalEditable: boolean): void {
+  setSelectedProject(i: any, isModalEditable: boolean): void {
     this.showSaveAlert = this.changesMap.size > 0;
     this.selectedProject = this.projects[i];
     this.selectedItems = this.projects[i].projectType;
@@ -130,7 +135,7 @@ export class ProjectsViewComponent implements OnInit {
   }
 
 
-  saveChange($event: any, isSaveMany: boolean): void {
+  saveChange(isSaveMany: boolean): void {
     let projectsToSave: ProjectInfo[] = [];
 
     if (this.changesMap.size > 0 && isSaveMany) {
@@ -183,7 +188,7 @@ export class ProjectsViewComponent implements OnInit {
   }
 
 
-  clear($event: any): void {
+  clear(): void {
     this.changesMap.clear();
     this.projects = [];
     this.area = '';

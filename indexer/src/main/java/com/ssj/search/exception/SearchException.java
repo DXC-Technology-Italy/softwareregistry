@@ -37,6 +37,10 @@ public class SearchException extends Exception {
 		this.attributes = attributes;
 	}
 	
+	
+	/** 
+	 * @return String
+	 */
 	public String getIdMessage() {
 		String message = environment.resolvePlaceholders("${" + id + "}");
 		if(attributes!=null) {

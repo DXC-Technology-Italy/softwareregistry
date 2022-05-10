@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { AuthenticationService } from 'src/app/service/auth/authentication.service';
+import {environment} from 'src/environments/environment';
+import {AuthenticationService} from 'src/app/service/auth/authentication.service';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-dependencies-view',
@@ -10,9 +11,7 @@ import { AuthenticationService } from 'src/app/service/auth/authentication.servi
 })
 export class DependenciesViewComponent implements OnInit {
 
-  constructor(private http: HttpClient, private authService: AuthenticationService) {
-  }
-
+  resourcebundle : any = {};
   lines: Array<string> = [];
   matches: Array<Match> = [];
   searching = false;
@@ -22,8 +21,17 @@ export class DependenciesViewComponent implements OnInit {
   dependecies: Map<string, Array<string>> = new Map<string, Array<string>>();
   isShownTempLib = false;
 
+  constructor(private http: HttpClient, private authService: AuthenticationService) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()    
+  }
 
   ngOnInit(): void {
+    this.fillLines();
+
+  }
+
+  private fillLines(): void {
     this.http.get(environment.apiUrl + '/file/dependencies/lines', this.authService.httpOptions()).subscribe(data => {
 
       const response = Object.create(data);
@@ -31,29 +39,22 @@ export class DependenciesViewComponent implements OnInit {
         this.lines.push(response[key]);
       }
     });
-
   }
 
-  onSearchClean(event: any): void {
+  onSearchClean(): void {
     this.searching = false;
     this.searchingMaxVersion = false;
     (document.getElementById('depsSearch') as HTMLInputElement).value = '';
   }
 
-  onSearchMaxVersionClean(event: any): void {
+  onSearchMaxVersionClean(): void {
     this.searching = false;
     this.searchingMaxVersion = false;
     (document.getElementById('searchMaxVersion') as HTMLInputElement).value = '';
-    this.http.get(environment.apiUrl + '/file/dependencies/lines', this.authService.httpOptions()).subscribe(data => {
-
-      const response = Object.create(data);
-      for (const key of Object.keys(data)) {
-        this.lines.push(response[key]);
-      }
-    });
+    this.fillLines();
   }
 
-  onSearchMaxVersion(event: any): void {
+  onSearchMaxVersion(): void {
 
     const searchTerm = (document.getElementById('searchMaxVersion') as HTMLInputElement).value;
     const url: string = environment.apiUrl + '/project/' + searchTerm + '/checkDependencies';
@@ -77,20 +78,14 @@ export class DependenciesViewComponent implements OnInit {
   }
 
 
-  onSearch(event: any): void {
+  onSearch(): void {
     const searchTerm = (document.getElementById('depsSearch') as HTMLInputElement).value;
     const url: string = environment.apiUrl + '/dependency/' + searchTerm;
     this.searching = true;
     this.searchingMaxVersion = false;
     this.matches = [];
-    if (this.lines.length === 0){
-      this.http.get(environment.apiUrl + '/file/dependencies/lines', this.authService.httpOptions()).subscribe(data => {
-
-        const response = Object.create(data);
-        for (const key of Object.keys(data)) {
-          this.lines.push(response[key]);
-        }
-      });
+    if (this.lines.length === 0) {
+      this.fillLines();
     }
 
     this.http.get(url, this.authService.httpOptions()).subscribe((data) => {
@@ -101,7 +96,7 @@ export class DependenciesViewComponent implements OnInit {
     });
   }
 
-  showTempLib($event: any): void {
+  showTempLib(): void {
     this.isShownTempLib = (document.getElementById('isShownTempLib') as HTMLInputElement).checked;
 
 

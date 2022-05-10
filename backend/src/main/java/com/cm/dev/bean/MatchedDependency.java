@@ -2,17 +2,35 @@ package com.cm.dev.bean;
 
 import com.cm.dev.domain.Dependency;
 
+/**
+ * A Java Project that has been identified as the dependency of another Project
+ * 
+ */
 public class MatchedDependency extends Dependency {
 
     private String actualVersion;
 
+    
+    /** 
+     * @return String
+     */
     public String getActualVersion() {
         return this.actualVersion;
     }
+
+    
+    /** 
+     * @param actualVersion
+     */
     public void setActualVersion(String actualVersion) {
         this.actualVersion = actualVersion;
     }
 
+    
+    /** 
+     * @param dependency
+     * @return MatchedDependency
+     */
     public static MatchedDependency fromDependency(Dependency dependency) {
         MatchedDependency md = new MatchedDependency();
         md.setArtifactId(dependency.getArtifactId());

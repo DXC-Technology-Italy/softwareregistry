@@ -1,18 +1,28 @@
 package com.cm.dev.service;
 
-import com.cm.dev.bean.MatchedSearch;
 import com.cm.dev.domain.Dependency;
+import com.cm.dev.domain.Project;
+import com.cm.dev.domain.Repository;
+import com.cm.dev.exception.ServiceException;
+import com.google.gson.JsonElement;
 
-import java.util.HashMap;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * Interface that exposes methods to handle low level data files access business logic
+ */
 public interface PlainFileReaderService {
 
-    public void loadDataFromDependenciesFile();
+    void loadDataFromDependenciesFile() throws ServiceException, FileNotFoundException;
 
-    public List<Dependency> getDependencies();
+    List<Dependency> getDependencies() throws ServiceException;
 
-    public HashMap<Integer, String> getDependenciesFileLines();
+    Map<Integer, String> getDependenciesFileLines() throws ServiceException;
 
+    Map<String, Project> getProjects();
+    Map<String, Repository> getRepositories();
+    Map<String, JsonElement> getRepositoryMap();
 }
 

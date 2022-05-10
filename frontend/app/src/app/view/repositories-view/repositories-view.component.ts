@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthenticationService} from 'src/app/service/auth/authentication.service';
 import {environment} from 'src/environments/environment';
+import {Localize} from 'src/app/i18n/localize';
 
 @Component({
   selector: 'app-repositories-view',
@@ -11,12 +12,16 @@ import {environment} from 'src/environments/environment';
 
 export class RepositoriesViewComponent implements OnInit {
 
+  resourcebundle : any = {};
+
   area = '';
   areas: string[] = [];
 
   repositories: Repository[] = [];
 
   constructor(private http: HttpClient, private authService: AuthenticationService) {
+    var localize = new Localize()
+    this.resourcebundle = localize.get()
   }
 
   ngOnInit(): void {
@@ -36,7 +41,7 @@ export class RepositoriesViewComponent implements OnInit {
   }
 
 
-  download($event: any): void {
+  download(): void {
 
     const options: any = this.authService.httpOptions();
     options.responseType = 'arraybuffer';
@@ -47,7 +52,7 @@ export class RepositoriesViewComponent implements OnInit {
       const blob = new Blob([data as any], {type: 'text/csv'});
       const filename = 'ListaRepository.csv';
       const objectUrl = window.URL.createObjectURL(blob);
-      const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+      const a: HTMLAnchorElement = document.createElement('a');
 
       a.href = objectUrl;
       a.download = filename;

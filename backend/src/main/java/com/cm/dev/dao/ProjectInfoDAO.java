@@ -1,11 +1,15 @@
 package com.cm.dev.dao;
 
 import com.cm.dev.domain.ProjectInfo;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+import com.mongodb.MongoException;
 
-public interface ProjectInfoDAO extends GenericDAO<ProjectInfo>{
+/**
+ * Interface for ProjectInfo Data Access Objects. 
+ * The GenericDAO interface already exposes basic CRUD operations
+ */
+public interface ProjectInfoDAO extends GenericDAO<ProjectInfo> {
 
-    public ProjectInfo findAndModifyProjectInfo(ProjectInfo projectInfo);
-    public ProjectInfo findAndModifyMavenCertified(ProjectInfo projectInfo);
+    ProjectInfo findAndModifyProjectInfo(ProjectInfo projectInfo) throws MongoException;
+
+    ProjectInfo findAndModifyMavenCertified(ProjectInfo projectInfo) throws MongoException;
 }

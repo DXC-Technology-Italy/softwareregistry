@@ -1,0 +1,63 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+categories:
+  - application-development
+  - it-development
+  - digital-asset-management
+description:
+  en:
+    features:
+      - automation
+      - repositories list
+      - java dependencies analysis
+      - projects list
+      - code search
+      - releases inspection
+    genericName: Software Registry
+    longDescription: |
+      Software Registry is a system that supports several software development aspects providing the following features:
+      - Automatic generation of a catalog of all software assets
+      - Persistence of areas / repositories / projects / dependencies hierarchy of Java projects
+      - Java project dependencies analysis and maven module relationships check
+      - Check for project dependencies updates
+      - Centralized search within software sources (Source Code Search Engine)
+      - Visualization of the updated software objects list in a development branch
+
+    shortDescription: |-
+      Software Registry is a tool that make the development phase simplier by showing extended information about projects and allowing code searches.
+developmentStatus: development
+it:
+  conforme:
+    gdpr: false
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: false
+    modelloInteroperabilita: false
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+legal:
+  license: MIT
+localisation:
+  availableLanguages:
+    - en
+    - it
+  localisationReady: true
+maintenance:
+  contacts:
+    - name: Alessio Fioravanti
+    - name: Daniele Gennaro
+  type: internal
+name: Software Registry
+platforms:
+  - windows
+  - mac
+  - linux
+releaseDate: '2022-05-11'
+softwareType: standalone/web
+url: 'https://github.com/DXC-Technology-Italy/softwareregistry.git'

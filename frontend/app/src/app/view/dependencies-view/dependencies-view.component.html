@@ -1,0 +1,123 @@
+<div class="content" role="main">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.java_projects}}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.labels.dependencies}}</li>
+    </ol>
+  </nav>
+
+  <div class="info right">
+    <a href="/data/dependencies.txt">{{resourcebundle.buttons.download_text}}</a>
+  </div>
+  <fieldset class="fieldSetMaxLib">
+    <label for="searchMaxVersion"><legend>{{resourcebundle.search.max_version}}</legend></label>
+    <div class="input-group">
+      <input type="text" class="form-control" id="searchMaxVersion"
+             (keydown.enter)="onSearchMaxVersion();showTempLib()"
+             placeholder="{{resourcebundle.search.project_helper}}"
+             aria-label="Find which projects use a library">
+      <button class="btn btn-outline-primary" (click)="onSearchMaxVersion()" type="button">{{resourcebundle.labels.search}}</button>
+      <button class="btn btn-outline-secondary" (click)="onSearchMaxVersionClean()" type="button">{{resourcebundle.labels.reset}}
+      </button>
+    </div>
+    <div class="searchTemporaryLibsBox">
+      <input class="form-check-input" type="checkbox" id="isShownTempLib" (change)="showTempLib()">
+      <label class="form-check-label" for="isShownTempLib" style="padding-left: 10px">
+        {{resourcebundle.search.show_temp_libs}}
+      </label>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend>{{resourcebundle.search.projects_library}}</legend>
+    <div class="input-group">
+      <input type="text" class="form-control" id="depsSearch" (keydown.enter)="onSearch()"
+             placeholder="{{resourcebundle.search.library_helper}}"
+             aria-label="Insert library name">
+      <button class="btn btn-outline-primary" (click)="onSearch()" type="button">{{resourcebundle.labels.search}</button>
+      <button class="btn btn-outline-secondary" (click)="onSearchClean()" type="button">{{resourcebundle.labels.reset}}</button>
+    </div>
+
+  </fieldset>
+  <br/>
+  <hr/>
+  <div class="searchResult" *ngIf="searchingMaxVersion">
+    <div class="bold">{{resourcebundle.labels.results}}:</div>
+    <table class="table table-bordered" aria-label="Search results">
+      <caption style="display:none">{{resourcebundle.labels.results}}</caption>
+      <thead>
+      <tr>
+        <th scope="col">{{resourcebundle.labels.library}}</th>
+        <th scope="col">{{resourcebundle.labels.version}}</th>
+        <th scope="col">{{resourcebundle.labels.groupid}}</th>
+        <th scope="col">{{resourcebundle.labels.parent}}</th>
+        <th scope="col">{{resourcebundle.labels.current_version}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let lib of matchedLibraries" [ngClass]="{ 'highlight-row': lib.styleRed }">
+        <td>{{ lib.artifactId }}</td>
+        <td><a href="{{lib.nexusUrl}}">{{ lib.version }}</a></td>
+        <td>{{ lib.groupId }}</td>
+        <td>{{ lib.parent }}</td>
+        <td>{{ lib.actualVersion }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <ng-container *ngIf="isShownTempLib">
+      <div class="bold">{{resourcebundle.labels.temp_libs}}:</div>
+      <table class="table table-bordered" aria-label="Search results">
+        <caption style="display:none">{{resourcebundle.labels.results}}</caption>
+        <thead>
+        <tr>
+          <th scope="col">{{resourcebundle.labels.library}}</th>
+          <th scope="col">{{resourcebundle.labels.version}}</th>
+          <th scope="col">{{resourcebundle.labels.groupid}}</th>
+          <th scope="col">{{resourcebundle.labels.parent}}</th>
+          <th scope="col">{{resourcebundle.labels.current_version}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let tempLib of matchedTempLibraries">
+          <td>{{ tempLib.artifactId }}</td>
+          <td><a href="{{tempLib.nexusUrl}}">{{ tempLib.version }}</a></td>
+          <td>{{ tempLib.groupId }}</td>
+          <td>{{ tempLib.parent }}</td>
+          <td>{{ tempLib.actualVersion }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <hr/>
+  </div>
+  <div class="searchResult" *ngIf="searching">
+    <div class="bold">{{resourcebundle.labels.results}}:</div>
+    <table class="table table-bordered" aria-label="Seach Results">
+      <caption style="display:none">{{resourcebundle.labels.results}}</caption>
+      <thead>
+      <tr>
+        <th scope="col">{{resourcebundle.labels.project}}</th>
+        <th scope="col">{{resourcebundle.labels.library}}</th>
+        <th scope="col">{{resourcebundle.labels.version}}</th>
+        <th scope="col">{{resourcebundle.labels.group}}</th>
+        <th scope="col">{{resourcebundle.labels.nexus_link}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let match of matches; let i = index">
+        <td>{{ match.project }}</td>
+        <td><a href="/dependencies#line-{{ match.line }}">{{ match.name }}</a></td>
+        <td>{{ match.version }}</td>
+        <td>{{ match.group }}</td>
+        <td><a href="{{ match.nexusUrl }}">{{ match.nexusUrl }}</a></td>
+      </tr>
+      </tbody>
+    </table>
+    <hr/>
+  </div>
+  <div class="report">
+    <div id="line-{{ (i+1) }}" *ngFor="let line of lines; let i = index">{{ line }}</div> <!-- line.id - line.value -->
+  </div>
+
+</div>

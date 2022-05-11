@@ -1,0 +1,235 @@
+<div class="content" role="main">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.java_projects}}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.labels.projects_list}}</li>
+    </ol>
+  </nav>
+
+  <div class="info right">
+    <a [routerLink]="" (click)="downloadReport()">{{resourcebundle.buttons.download_xls}}</a>
+  </div>
+  <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detailModalLabel">{{resourcebundle.labels.details}}</h5>
+
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning" role="alert" *ngIf="showSaveAlert && isModalEditable">
+            {{resourcebundle.text.projects_warning}}
+          </div>
+          <form>
+            <div class="form-group container-fluid">
+              <div class="row align-items-start custom-margin">
+                <div class="col-6">
+                  <label for="name"><strong>{{resourcebundle.labels.project}}</strong></label>
+                  <input type="text" class="form-control" name="name" readonly id="name"
+                         [value]="selectedProject.name"/>
+                </div>
+                <div class="col-3">
+                  <label for="versione"><strong>{{resourcebundle.labels.version}}</strong></label>
+                  <input type="text" class="form-control" name="versione" readonly id="versione"
+                         [value]="selectedProject.version"/>
+                </div>
+                <div class="col-3">
+                  <label for="area"><strong>{{resourcebundle.labels.area}}</strong></label>
+                  <input type="text" class="form-control" name="area" readonly id="area"
+                         [value]="selectedProject.area"/>
+                </div>
+              </div>
+              <div class="row align-items-start custom-margin">
+                <div class="col-4">
+                  <label for="repository"><strong>{{resourcebundle.labels.repository}}</strong></label>
+                  <input type="text" class="form-control" name="repository" readonly id="repository"
+                         [value]="selectedProject.repository"/>
+                </div>
+                <div class="col-8">
+                  <label for="url"><strong></strong>{{resourcebundle.labels.git_url}}</label>
+                  <input type="text" class="form-control" name="url" readonly id="url"
+                         [value]="selectedProject.urlGit"/>
+                </div>
+              </div>
+
+              <div class="row align-items-start custom-margin">
+                <div class="col-4 align-middle">
+                  <label for="mavenCertified"><strong style="float:left">{{resourcebundle.labels.maven_certified}}</strong><br></label>
+                  <input class="custom-medium-checkbox" type="checkbox" name="mavenCertified" id="mavenCertified"
+                         [disabled]="!isModalEditable"
+                         [checked]="selectedProject.mavenCertified==true"
+                         (change)="fillChangesList($event, selectedProject.name, selectedProject.repository, false)"
+                  />
+                </div>
+                <div class="col-8">
+                  <label for="projectType"><strong>{{resourcebundle.labels.tags}}</strong></label>
+                  <ng-multiselect-dropdown name="projectType" class="custom_dropdown" id="projectType"
+                                           [placeholder]="'Project Type'"
+                                           [settings]="dropdownSettings"
+                                           [data]="dropdownList"
+                                           [(ngModel)]="selectedItems"
+                                           [disabled]="!isModalEditable"
+                  >
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+              <div class="row align-items-start custom-margin">
+                <label for="description"><strong>{{resourcebundle.labels.description}}</strong></label>
+                <textarea name="description" value="{{selectedProject.description}}" [disabled]="!isModalEditable" id="description"
+                          (change)="fillChangesList($event, selectedProject.name, selectedProject.repository, false)"></textarea>
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{resourcebundle.labels.close}}</button>
+          <button *ngIf="isModalEditable" type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                  (click)="saveChanges(false)">{{resourcebundle.labels.save}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
+          <strong>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 class="bi bi-question-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path
+                d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+            {{resourcebundle.labels.help_table}}
+          </strong>
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+           data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          Solo pe gli utenti di tipo ADMIN:<br>
+          <ul>
+            <li>E' possibile modificare il campo "Ceritificato Maven" cliccando sul campo corrispondente, modificandone
+              direttamente il valore e cliccando il bottone Salva sullla pagina principale.
+            </li>
+            <li>E' possibile cliccare sul bottone di edit della singola riga della tabella per poter modificare i campi:
+              <ul>
+                <li>"Ceritificato Maven";</li>
+                <li>"Tipologia";</li>
+                <li>"Descrizione".</li>
+              </ul>
+            </li>
+          </ul>
+          <br/>
+          <strong>Certificato Maven: </strong> Indica se per il progetto sono state completate le attività di profilazione e
+          verifica dei pacchetti mavenizzati.
+          <br>
+          <strong>Tipologia: </strong> Indica la tipologia del progetto, la selezione può essere multipla e i valori possibili
+          sono:
+          <ul>
+            <li>{{resourcebundle.labels.batch}}</li>
+            <li>{{resourcebundle.labels.library}}</li>
+            <li>{{resourcebundle.labels.online}}</li>
+            <li>{{resourcebundle.labels.web_service}}</li>
+            <li>{{resourcebundle.labels.client_lib}}</li>
+          </ul>
+          <strong>Descrizione: </strong> Indica un breve descrizione sul funzionamento del progetto
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form #form="ngForm">
+    <div class="form-group">
+      <label for="areaFilter"><strong>{{resourcebundle.labels.area}}</strong></label>
+      <select class="form-select" name="area" id="areaFilter"
+              [(ngModel)]="area">
+        <option></option>
+        <option *ngFor="let area of areas"
+                [value]="area">{{ area }}</option>
+      </select>
+
+      <label for="repositoryFilter"><strong>{{resourcebundle.labels.repository}}</strong></label>
+      <select class="form-select" name="repository" id="repositoryFilter"
+              [(ngModel)]="repository">
+        <option></option>
+        <option *ngFor="let repository of repositories"
+                [value]="repository">{{ repository }}</option>
+      </select>
+
+      <label for="mavenCertifiedFilter"><strong>{{resourcebundle.labels.maven_certified}}</strong></label>
+      <select class="form-select" name="mavenCertified" id="mavenCertifiedFilter"
+              [(ngModel)]="mavenCertified">
+        <option></option>
+        <option [value]=true>{{resourcebundle.labels.true}}</option>
+        <option [value]=false>{{resourcebundle.labels.false}}</option>
+      </select>
+    </div>
+    <br>
+    <div id="liveAlertPlaceholder"></div>
+    <div *ngIf="isAdmin()">
+      <button class="btn btn-outline-primary table-buttons" (click)="saveChanges(true)" type="button">{{resourcebundle.labels.save}}</button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.buttons.reset_updates}}
+      </button>
+    </div>
+    <table class="table table-bordered" id="data_table" aria-label="Projects List">
+      <caption style="display:none">{{resourcebundle.labels.projects_list}}</caption>
+      <thead>
+      <tr>
+        <th id="maven_certified" scope="col">{{resourcebundle.labels.maven_certified}}</th>
+        <th scope="col">{{resourcebundle.labels.project}}</th>
+        <th scope="col">{{resourcebundle.labels.version}}</th>
+        <th scope="col">{{resourcebundle.labels.area}}</th>
+        <th scope="col">{{resourcebundle.labels.repository}}</th>
+        <th scope="col">{{resourcebundle.labels.tags}}</th>
+        <th scope="col">{{resourcebundle.labels.git_url}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr id="line-{{ i }}" *ngFor="let project of projects | projectTableFilter: form.value; let i = index"
+          [ngClass]="{ 'highlight-row': project.changedValue }">
+        <td class="text-center align-middle"><input class="custom-large-checkbox" type="checkbox" aria-labelledby="maven_certified"
+                                                    name="mavenCertified-{{i}}" [disabled]="!isAdmin()"
+                                                    [checked]="project.mavenCertified==true"
+                                                    (change)="fillChangesList($event, project.name, project.repository, true)"/>
+        </td>
+        <td>{{ project.name }}</td>
+        <td>{{ project.version }}</td>
+        <td>{{ project.area }}</td>
+        <td>{{ project.repository }}</td>
+        <td>
+          <span *ngFor=" let type of project.projectType" class="custom_type_label">{{type.item_text}}</span>
+        </td>
+        <td><a href="{{ project.urlGit }}">{{ project.urlGit }}</a></td>
+        <td>
+          <div class="btn-group">
+            <button type="button" class="btn btn-outline-primary table-buttons" data-bs-toggle="modal" *ngIf="isAdmin()"
+                    (click)="setSelectedProject(project.index, true)" data-bs-target="#detailModal">
+              <em class="bi bi-pencil-square"></em>
+            </button>
+            <button type="button" class="btn btn-outline-primary table-buttons " data-bs-toggle="modal"
+                    (click)="setSelectedProject(project.index, false)" data-bs-target="#detailModal">
+              <em class="bi bi-eye-fill"></em>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div *ngIf="isAdmin()">
+      <button class="btn btn-outline-primary table-buttons" (click)="saveChanges(true)" type="button">{{resourcebundle.labels.save}}</button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.buttons.reset_updates}}
+      </button>
+    </div>
+  </form>
+
+</div>

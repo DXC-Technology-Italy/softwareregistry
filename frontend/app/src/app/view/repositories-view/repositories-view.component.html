@@ -1,0 +1,80 @@
+<div class="content" role="main">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.dev_env}}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.labels.repo_list}}</li>
+    </ol>
+  </nav>
+
+  <div class="info right">
+    <a href="/data/repositories.json">{{resourcebundle.buttons.download_text}}</a><br>
+    <a [routerLink]="" (click)="download()" type="button">{{resourcebundle.buttons.download_xls}}</a>
+  </div>
+
+  <form #form="ngForm">
+    <div class="form-group filters">
+      <label for="area"><strong>{{resourcebundle.labels.area}}</strong></label>
+      <select class="form-select" name="area" id="area"
+              [(ngModel)]="area">
+        <option></option>
+        <option *ngFor="let area of areas"
+                [value]="area">{{ area }}</option>
+      </select>
+    </div>
+    <div>
+      <button
+        class="btn btn-primary custom-btn"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target=".collapse-item"
+        aria-expanded="false"
+        aria-controls=".collapse-item"
+      >
+      {{resourcebundle.labels.all_modules}}
+      </button>
+    </div>
+    <table id="data_table" class="table table-bordered" style="table-layout: auto" aria-label="Elenco Repository">
+      <caption style="display:none">{{resourcebundle.labels.repo_list}}</caption>
+      <thead>
+      <tr>
+        <th scope="col" class="col-2">{{resourcebundle.labels.name}}</th>
+        <th scope="col" class="col-1">{{resourcebundle.labels.area}}</th>
+        <th scope="col" class="col-1">{{resourcebundle.labels.type}}</th>
+        <th scope="col" class="col-4">{{resourcebundle.labels.git_url}}</th>
+        <th scope="col" class="col-4">{{resourcebundle.labels.maven_modules}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let repository of repositories | repositoryTableFilter: form.value; let i = index">
+        <td class="col-2">{{ repository.name }}</td>
+        <td class="col-1">{{ repository.area }}</td>
+        <td class="col-1">{{ repository.kind }}</td>
+        <td class="col-4"><a href="{{ repository.url }}">{{ repository.url }}</a></td>
+        <td class="col-4">
+          <div *ngIf="repository.kind == 'Java' && repository.projects.length > 0">
+            <a class="modules-link" data-bs-toggle="collapse"
+               href="#collapse{{ repository.area }}_{{ repository.name }}" role="button" aria-expanded="false">
+              <em class="bi bi-card-list"></em> {{resourcebundle.labels.view_modules}}
+            </a>
+            <div class="collapse collapse-item" id="collapse{{ repository.area }}_{{ repository.name }}">
+              <table class="table modules-table table-sm" aria-label="Maven Modules">
+                <caption style="display:none">{{resourcebundle.labels.maven_modules_list}}:</caption>
+                <thead style="display:none"><tr><th scope="col"></th></tr></thead>
+                <tbody>
+                <tr *ngFor="let rep of repository.projects">
+                  <td class="col">{{ rep.name }}</td>
+                  <td class="col bold">{{ rep.version.split("-")[0] }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </form>
+
+</div>

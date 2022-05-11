@@ -1,0 +1,27 @@
+.custom-margin {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.content {
+  margin-top: 80px;
+}
+
+.download {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.custom-card{
+  position: relative;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 0.25rem;
+  font-size: larger;
+  font-weight: 400;
+}

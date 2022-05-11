@@ -1,0 +1,90 @@
+<div class="content" role="main">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.dev_releases}}</li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{resourcebundle.labels.software_items_list}}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
+          <strong>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                 class="bi bi-question-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path
+                d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+            {{resourcebundle.labels.prerequisites}}
+          </strong>
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+           data-bs-parent="#accordionExample">
+        <div class="accordion-body" [innerHTML]="resourcebundle.text.los_info">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form>
+    <div class="form-group">
+      <div class="row align-items-start custom-margin">
+        <div class="col-12">
+          <label for="bigcode"><strong>{{resourcebundle.labels.big_code}}</strong></label>
+          <input type="text" class="form-control" name="bigcode" id="bigcode"
+                 [(ngModel)]="bigcode"
+                 [value]="bigcode"/>
+        </div>
+
+      </div>
+    </div>
+    <div class="custom-margin">
+      <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search()"
+              type="button">{{resourcebundle.labels.search}}
+      </button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.labels.reset}}</button>
+    </div>
+
+  </form>
+
+  <div class="alert alert-danger" role="alert" *ngIf="noResult">
+    <strong>{{resourcebundle.labels.no_results}}</strong>
+  </div>
+  <div class="losResult" *ngIf="losGenerated">
+    <div class="download">
+      <a [routerLink]="" (click)="download()" type="button">{{resourcebundle.buttons.download_report}}</a>
+    </div>
+    <table class="table table-bordered" id="data_table" aria-label="Software Items List">
+      <caption style="display:none">{{resourcebundle.labels.software_items_list}}</caption>
+      <thead>
+      <tr>
+        <th scope="col">{{resourcebundle.labels.filename}}</th>
+        <th scope="col">{{resourcebundle.labels.path}}</th>
+        <th scope="col">{{resourcebundle.labels.repository}}</th>
+        <th scope="col">{{resourcebundle.labels.area}}</th>
+        <th scope="col">{{resourcebundle.labels.object}}</th>
+        <th scope="col">{{resourcebundle.labels.action}}</th>
+        <th scope="col">{{resourcebundle.labels.object_type}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let match of matches">
+        <td><a target="_blank" href="{{ match.url }}">{{ match.name }} </a></td>
+        <td>{{ match.path }}</td>
+        <td>{{ match.repository }}</td>
+        <td>{{ match.area }}</td>
+        <td>{{ match.repository}}/{{match.path}}{{match.name}}</td>
+        <td>{{ match.action }}</td>
+        <td>{{ match.extension}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

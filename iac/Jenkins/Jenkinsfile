@@ -1,0 +1,133 @@
+#!groovy
+
+/* START Configuration */
+
+// BEFORE running the pipeline it is necessary to configure the following variables
+
+def git_host     = "<GITLAB HOST>" // Example: gitlab.org
+def git_endpoint = "http://<GITLAB_HOST>"
+def git_groups_api = [
+  '<GROUP NAME>' : '<GITLAB_ENDPOINT>/api/v4/groups/<GROUP ID>'
+]
+def git_branch = "<GIT BRANCH TO ANALYZE>"
+def git_credentials = "<JENKINS CREDENTIALS USED TO CLONE GIT REPOSITORIES>"
+def token = "<GIT TOKEN USED TO ACCESS GITLAB API>"
+def backend_url = "<SOFTWARE REGISTRY BACKEND URL AND PORT>"
+
+def MAVEN_HOME = "" // Example: "/opt/apache-maven-3.5.4/bin/"
+def JAVA_HOME  = "" // Example: "/usr/lib/jvm/java-1.8.0/"
+def DATA_HOME  = "" // Example: "/app/software-registry/data"
+
+def projects_to_exclude = [ "<ARRAY OF PROJECTS THAT DO NOT NEED TO BE ANALYZED>"]
+
+/* END Configuration */
+
+pipeline {
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '2'))
+        gitLabConnection(git_host)
+        disableConcurrentBuilds()
+    }
+    agent {
+        node {
+            label '<AGENT>'
+        }
+    }
+
+    parameters {
+      choice( name: 'refresh_db', choices: ['No', 'Si'], description: "Eseguire il refresh del database con i dati aggiornati?"
+      )
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                  deleteDir()
+
+                  def repository_objects = []
+                  def dependencies_file_text = ""
+                  git_groups_api.each { git_group_name, git_group_api_url ->
+                    echo "Processing group " + git_group_name
+                    def url = git_group_api_url + "/projects?private_token=" + token + "&per_page=1000"
+                    def response = httpRequest acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'GET', url: url
+                    def repositories = readJSON text: response.content
+                    repositories.each { repository ->
+
+                      def projects = []
+                      if (repository.path_with_namespace in projects_to_exclude) {
+                        return
+                      }
+                      dir(repository.path_with_namespace) {
+                        checkout([$class: 'GitSCM', branches: [[name: git_branch ]], userRemoteConfigs: [[credentialsId: git_credentials, url: repository.http_url_to_repo]]])
+                        def pomExists = fileExists './pom.xml'
+                        if ( repository.tag_list[0] == "Java" && pomExists) {
+                          def packagePOM = readMavenPom(file: "./pom.xml")
+                          modules = packagePOM.modules
+                          withEnv(["JAVA_HOME=${JAVA_HOME}", "MAVEN_HOME=${MAVEN_HOME}"]) {
+                            dependencies_file_text += exec("${MAVEN_HOME}/mvn -P esercizio dependency:tree --fail-at-end | grep -v 'WARNING' | sed -e 's/\\[INFO\\] //'") + "\n"
+                          }
+                          modules.each { project ->
+                            if ( project.endsWith("_WRAPPER") || project.equals("STIP")) {
+                              def packageWrapperPOM = readMavenPom(file: project + "/pom.xml")
+                              wrapperModules = packageWrapperPOM.modules
+                              wrapperModules.each { wrapperProject ->
+                                withEnv(["JAVA_HOME=${JAVA_HOME}", "MAVEN_HOME=${MAVEN_HOME}"]) {
+                                  def packageWrapperModulePOM = readMavenPom(file: project + "/" + wrapperProject + "/pom.xml")
+                                  wrapperModuleVersion = exec ( "cd ${project}/${wrapperProject}; ${MAVEN_HOME}/mvn help:evaluate -Dexpression=project.version -q -DforceStdout")
+                                  wrapperModuleName = packageWrapperModulePOM.artifactId
+                                  projects.push( [ 'name': wrapperModuleName, 'version': wrapperModuleVersion ] )
+                                }
+                              }
+                            } else {
+                              withEnv(["JAVA_HOME=${JAVA_HOME}", "MAVEN_HOME=${MAVEN_HOME}"]) {
+                                version = exec ( "cd ${project}; ${MAVEN_HOME}/mvn help:evaluate -Dexpression=project.version -q -DforceStdout")
+                                def packageModulePOM = readMavenPom(file: project + "/pom.xml")
+                                name = packageModulePOM.artifactId
+                                projects.push( [ 'name': name, 'version': version ] )
+                              }
+                            }
+                          }
+                        }
+                      }
+                      def repository_object = [ 'name': repository.name, 'longName': repository.path_with_namespace, 'url': repository.http_url_to_repo, 'kind': repository.tag_list[0], 'projects': projects ]
+                      repository_objects.push ( repository_object )
+
+                    }
+                  }
+                  writeJSON file: 'repositories.json', json: repository_objects
+                  writeFile file: 'dependencies.txt', text: dependencies_file_text
+                }
+            }
+        }
+        stage('Publish Results') {
+          steps {
+              script {
+                exec ("cp repositories.json dependencies.txt ${DATA_HOME}")
+
+                archiveArtifacts artifacts: 'dependencies.txt'
+                archiveArtifacts artifacts: 'repositories.json'
+              }
+          }
+        }
+        stage('Refresh Database') {
+          when { expression { refresh_db == "Si" } }
+          steps {
+            script {
+              echo "Refreshing database repositories"
+              def url = backend_url + "/repository/reload"
+              def response = httpRequest httpMode: 'GET', url: url
+
+              echo "Refreshing database projects and dependencies"
+              url = backend_url + "/project/reload"
+              response = httpRequest httpMode: 'GET', url: url
+
+            }
+          }
+        }
+    }
+}
+
+def exec(args) {
+  return sh(returnStdout: true, script: args).trim()
+}

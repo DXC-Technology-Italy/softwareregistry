@@ -1,0 +1,28 @@
+.content {
+  margin-top: 50px;
+}
+.card {
+  margin-top: 20px;
+  height: 380px;
+}
+.card-text p {
+  font-size: 14px;
+  font-style: italic;
+}
+.card-title {
+  margin-bottom: 20px;
+  color: #0b5ed7;
+
+}
+
+.card-list {
+  list-style: none;
+  padding: 10px 0 0 10px;
+}
+.card-list-item {
+  padding-bottom: 5px;
+}
+.card-list-item a {
+  color: #555;
+  font-size: 18px;
+}

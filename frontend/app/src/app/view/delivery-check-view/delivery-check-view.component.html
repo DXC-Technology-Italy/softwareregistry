@@ -1,0 +1,103 @@
+<div class="content" role="main">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.dev_releases}}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.delivery_check}}</li>
+    </ol>
+  </nav>
+
+  <form>
+    <div class="form-group">
+      <div class="row align-items-start custom-margin">
+        <div class="col-12">
+          <label for="bigcode"><strong>{{resourcebundle.search.bigCode}}</strong></label>
+          <input type="text" class="form-control" name="bigcode" id="bigcode"
+                 [(ngModel)]="bigcode"
+                 [value]="bigcode"/>
+        </div>
+
+      </div>
+    </div>
+    <div class="custom-margin">
+      <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search()"
+              type="button">{{resourcebundle.labels.search}}
+      </button>
+      <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.labels.reset}}</button>
+    </div>
+
+  </form>
+
+  <div class="alert alert-danger" role="alert" *ngIf="noResult">
+    <strong>{{resourcebundle.labels.no_results}}</strong>
+  </div>
+  <div class="losResult" *ngIf="deliveryCheckGenerated">
+
+
+    <div class="mx-5 ">
+      <h6 class="border-bottom larger pb-2 mb-0">{{resourcebundle.labels.releases}}: <strong>{{bigcode}}</strong></h6>
+      <div class="my-5 p-3 bg-body rounded shadow" *ngFor="let release of releases; let i = index">
+        <div class="d-flex row text-muted pt-3">
+          <p class="pb-3 mb-0 larger lh-sm">
+            <a data-bs-toggle="collapse" href="#collapse-{{i}}" role="button"
+               aria-expanded="false" (click)="setSelectedRelease(i)">
+              <strong class="d-block text-gray-dark"><span>
+                {{ resourcebundle.labels.merge_request_type.replace("@type@", release.mergeRequestType)  }} 
+              </span>
+              <span style="float: right">{{release.date | slice:0:10}} {{release.date | slice:12:-1}}</span></strong>
+            </a>
+          </p>
+
+
+          <div class="collapse" id="collapse-{{i}}">
+
+            <div class="custom-card card-body custom-margin table-responsive">
+              {{ resourcebundle.labels.merge_request_details.replace("@author@", release.author) }} 
+              <br>
+              <table class="table" aria-label="Releases">
+                <caption style="display:none"></caption>
+                <thead>
+                <tr>
+                  <th scope="col" class="text-center">
+                    
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let url of release.nexusUrls">
+                  <td>{{ url }}</td>
+                </tr>
+                </tbody>
+              </table>
+
+              <table class="table" id="data_table-{{i}}" aria-label="Software Items">
+                <caption style="display:none">
+                  {{ resourcebundle.labels.software_items_list }}
+                </caption>
+                <thead>
+                <tr>
+                  <th scope="col">{{ resourcebundle.labels.filename }}</th>
+                  <th scope="col">{{resourcebundle.labels.repository}}</th>
+                  <th scope="col">{{resourcebundle.labels.sha1sum}}</th>
+                  <th scope="col">{{ resourcebundle.labels.filesystem_path }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let releaseItem of release.releaseItems">
+                  <td>{{ releaseItem.filename }}</td>
+                  <td>{{ releaseItem.repository }}</td>
+                  <td>{{ releaseItem.sha1sum }}</td>
+                  <td>{{ releaseItem.pathMef }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="download">
+              <a [routerLink]="" (click)="download(i)" type="button">{{resourcebundle.buttons.download_report}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

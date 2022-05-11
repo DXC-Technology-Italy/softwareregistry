@@ -1,0 +1,38 @@
+<div class="content" role="main">
+
+  <div class="container">
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card border-0 shadow rounded-3 my-5">
+            <div class="card-body p-4 p-sm-5">
+              <div class="header-icon">
+                <em class="bi bi-person-circle"></em>
+              </div>
+              <h5 class="card-title text-center mb-5 fw-light fs-5">{{ resourcebundle.labels.title }}</h5>
+              <form #form="ngForm">
+                <div class="form-floating mb-3">
+                  <input id="floatingInput" type="email" class="form-control" placeholder="Username" name= "username" [(ngModel)]="username">
+                  <label for="floatingInput">{{ resourcebundle.labels.username }}</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <input id="floatingPassword" type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="password">
+                  <label for="floatingPassword">{{resourcebundle.labels.password}}</label>
+                </div>
+
+                <div class="d-grid">
+                  <button class="btn btn-primary btn-login text-uppercase fw-bold" (click)="login()" type="submit">{{resourcebundle.labels.login}}</button>
+                </div>
+                <div class="login-alert" role="alert">
+                  <em class="bi bi-info-square"></em>
+                    <span [innerHTML]="resourcebundle.labels.vpn_credentials"></span>
+                </div>
+                <div class="error" *ngIf="error">
+                  {{ error }}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

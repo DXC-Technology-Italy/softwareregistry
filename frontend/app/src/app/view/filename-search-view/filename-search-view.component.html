@@ -1,0 +1,127 @@
+<div class="content" role="main">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
+      <li class="breadcrumb-item">{{resourcebundle.labels.search}}</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.search.all_prj}}</li>
+    </ol>
+  </nav>
+
+
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="filename">
+          <strong>
+            {{resourcebundle.search.filename_to_search}}
+          </strong>
+        </label>
+        <input type="text" class="form-control" name="filename" (keydown.enter)="search()" id="filename"
+               [(ngModel)]="filename"
+               [value]="filename"/>
+      </div>
+    </div>
+    <div class="col-2">
+      <label for="limitResult"><strong>{{resourcebundle.search.limit}}</strong></label>
+      <input type="text" class="form-control" name="limitResult" id="limitResult"
+             [(ngModel)]="limitResult"
+             [value]="limitResult"/>
+    </div>
+    <div class="col-2">
+      <strong>{{resourcebundle.search.whole_word}}</strong>
+      <div class="form-check form-switch align-items-center">
+        <input class="form-check-input" type="checkbox" role="switch" id="wholeWord">
+        <label class="form-check-label" for="wholeWord"></label>
+      </div>
+    </div>
+    <form>
+      <div class="row align-items-start custom-margin">
+        <div class="form-group filters col-4">
+          <label for="area"><strong>{{resourcebundle.labels.area}}</strong></label>
+          <select class="form-select" name="area" id="area"
+                  [(ngModel)]="area">
+            <option></option>
+            <option *ngFor="let area of areas"
+                    [value]="area">{{ area }}</option>
+          </select>
+        </div>
+        <div class="form-group filters col-4">
+          <label for="repository"><strong>{{resourcebundle.labels.repository}}</strong></label>
+          <select class="form-select" name="repository" id="repository"
+                  [(ngModel)]="repository">
+            <option></option>
+            <option *ngFor="let repository of repositories"
+                    [value]="repository">{{ repository }}</option>
+          </select>
+        </div>
+        <div class="form-group filters col-4">
+          <label for="kind"><strong>{{resourcebundle.labels.type}}</strong></label>
+          <select class="form-select" name="kind" id="kind"
+                  [(ngModel)]="kind">
+            <option></option>
+            <option *ngFor="let kind of kinds"
+                    [value]="kind">{{ kind }}</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="results.length > 0" class="col-2 custom-margin">
+    {{resourcebundle.labels.results_number}}: <span>{{rowCount}}</span>
+  </div>
+  <div class="searchTab">
+    <button class="btn btn-outline-primary table-buttons" style="margin-right: 10px" (click)="search()"
+            type="button">{{resourcebundle.labels.search}}
+    </button>
+    <button class="btn btn-outline-danger table-buttons" (click)="clear()" type="button">{{resourcebundle.buttons.reset_filters}}</button>
+  </div>
+
+
+  <div class="alert alert-danger" role="alert" *ngIf="noResults">
+    <strong>{{resourcebundle.labels.no_results}}</strong>
+  </div>
+  <div class="download" *ngIf="results.length > 0">
+    <a [routerLink]="" (click)="download()" type="button">{{resourcebundle.buttons.download_report}}</a>
+  </div>
+  <table class="table table-bordered" id="data_table" aria-label="Search Results">
+    <caption style="display:none">{{resourcebundle.labels.results}}</caption>
+    <thead>
+    <tr>
+      <th scope="col" [appSort]="results" data-name="filename" (click)="setOrder('filename')">{{resourcebundle.labels.file}}
+        <em *ngIf=" columnsOrder.get('filename') == 'desc'" class="bi bi-arrow-down float-right"></em>
+        <em *ngIf=" columnsOrder.get('filename') == 'asc'" class="bi bi-arrow-up float-right"></em>
+        <em *ngIf=" columnsOrder.get('filename') == 'asc'" class="bi bi-arrow-up float-right"></em>
+      </th>
+      <th scope="col" [appSort]="results" data-name="area" (click)="setOrder('area')">
+        {{resourcebundle.labels.area}}
+        <em *ngIf=" columnsOrder.get('area') == 'desc'" class="bi bi-arrow-down float-right"></em>
+        <em *ngIf=" columnsOrder.get('area') == 'asc'" class="bi bi-arrow-up float-right"></em>
+      </th>
+      <th scope="col" [appSort]="results" data-name="repository" (click)="setOrder('repository')">
+        {{resourcebundle.labels.repository}}
+        <em *ngIf=" columnsOrder.get('repository') == 'desc'" class="bi bi-arrow-down float-right"></em>
+        <em *ngIf=" columnsOrder.get('repository') == 'asc'" class="bi bi-arrow-up float-right"></em>
+      </th>
+      <th scope="col" [appSort]="results" data-name="project" (click)="setOrder('project')">
+        {{resourcebundle.labels.project}}
+        <em *ngIf=" columnsOrder.get('project') == 'desc'" class="bi bi-arrow-down float-right"></em>
+        <em *ngIf=" columnsOrder.get('project') == 'asc'" class="bi bi-arrow-up float-right"></em>
+      </th>
+      <th scope="col" [appSort]="results" data-name="kind" (click)="setOrder('kind')">{{resourcebundle.labels.type}}
+        <em *ngIf=" columnsOrder.get('kind') == 'desc'" class="bi bi-arrow-down float-right"></em>
+        <em *ngIf=" columnsOrder.get('kind') == 'asc'" class="bi bi-arrow-up float-right"></em>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let result of results">
+      <td><a target="_blank" href="{{ result.url }}">{{ result.filename }}</a></td>
+      <td>{{ result.area }}</td>
+      <td>{{ result.repository }}</td>
+      <td>{{ result.project }}</td>
+      <td>{{ result.kind }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

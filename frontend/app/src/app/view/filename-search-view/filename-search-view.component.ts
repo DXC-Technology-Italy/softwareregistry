@@ -23,7 +23,7 @@ export class FilenameSearchViewComponent implements OnInit {
   kind = '';
   limitResult = 100;
   rowCount = 0;
-  kinds: string[] = ['Java', 'Cobol', 'Database', 'SQL', 'Batch', 'Python', 'Altro'];
+  kinds: string[] = [];
   results: FileSearchResult[] = [];
   columnsOrder: Map<string, string> = new Map<string, string>([
     ['filename', ''],
@@ -38,6 +38,7 @@ export class FilenameSearchViewComponent implements OnInit {
   constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService) {
     var localize = new Localize()
     this.resourcebundle = localize.get()
+    this.kinds = this.resourcebundle.lists.technologies
   }
 
   ngOnInit(): void {

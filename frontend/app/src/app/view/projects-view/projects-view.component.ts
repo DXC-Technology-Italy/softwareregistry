@@ -135,7 +135,7 @@ export class ProjectsViewComponent implements OnInit {
   }
 
 
-  saveChange(isSaveMany: boolean): void {
+  saveChanges(isSaveMany: boolean): void {
     let projectsToSave: ProjectInfo[] = [];
 
     if (this.changesMap.size > 0 && isSaveMany) {

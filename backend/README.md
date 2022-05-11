@@ -24,5 +24,5 @@ Before running the application it is necessary to configure the following files:
 Configure the file `deploy.sh` and run it. The script will basically do the following:
 
 - Build the code
-- Build a docker image based on nginx
+- Build a docker image based on Spring Boot
 - Run the docker image

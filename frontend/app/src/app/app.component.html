@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
       <em class="bi bi-clipboard-data"></em>
-      {{resourcebundle.messages.title}} <span class="v">v{{VERSION}}</span>
+      {{resourcebundle.labels.title}} <span class="v">v{{VERSION}}</span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,10 +17,10 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{resourcebundle.messages.dev_env}}
+            {{resourcebundle.labels.dev_env}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="Repository List">
-            <li><a class="dropdown-item" href="/repositories">{{resourcebundle.messages.repo_list}}</a></li>
+            <li><a class="dropdown-item" href="/repositories">{{resourcebundle.labels.repo_list}}</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -32,11 +32,11 @@
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{resourcebundle.messages.java_projects}}
+            {{resourcebundle.labels.java_projects}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="Java Projects">
-            <li><a class="dropdown-item" href="/projects-info">{{resourcebundle.messages.projects_list}}</a></li>
-            <li><a class="dropdown-item" href="/dependencies">{{resourcebundle.messages.dep_analysis}}</a></li>
+            <li><a class="dropdown-item" href="/projects-info">{{resourcebundle.labels.projects_list}}</a></li>
+            <li><a class="dropdown-item" href="/dependencies">{{resourcebundle.labels.dep_analysis}}</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
@@ -44,17 +44,17 @@
             {{resourcebundle.labels.search_codebase}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="Code Search">
-            <li><a class="dropdown-item" href="/code-search">{{resourcebundle.messages.code_search}}</a></li>
-            <li><a class="dropdown-item" href="/filename-search">{{resourcebundle.messages.file_search}}</a></li>
+            <li><a class="dropdown-item" href="/code-search">{{resourcebundle.labels.code_search}}</a></li>
+            <li><a class="dropdown-item" href="/filename-search">{{resourcebundle.labels.file_search}}</a></li>
           </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{resourcebundle.messages.dev_releases}}
+            {{resourcebundle.labels.dev_releases}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="Software Releases">
-            <li><a class="dropdown-item" href="/los">{{resourcebundle.messages.generate_los}}</a></li>
-            <li><a class="dropdown-item" href="/delivery-check">{{resourcebundle.messages.generate_los_report}}</a></li>
+            <li><a class="dropdown-item" href="/los">{{resourcebundle.labels.generate_los}}</a></li>
+            <li><a class="dropdown-item" href="/delivery-check">{{resourcebundle.labels.generate_los_report}}</a></li>
           </ul>
         </li>
         <li *ngIf="isAdmin()" class="nav-item dropdown">
@@ -62,7 +62,7 @@
             {{resourcebundle.labels.settings}}
           </a>
           <ul class="dropdown-menu" aria-labelledby="Settings">
-            <li><a class="dropdown-item" href="/user">{{resourcebundle.messages.edit_users_role}}</a></li>
+            <li><a class="dropdown-item" href="/user">{{resourcebundle.labels.edit_users_role}}</a></li>
           </ul>
         </li>
       </ul>

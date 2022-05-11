@@ -29,7 +29,7 @@ export class CodeSearchViewComponent implements OnInit {
   projects: string[] = [];
   extensions: string[] = ['txt', 'java', 'xml', 'sql', 'sh', 'py', 'cob', 'properties', 'pco', 'cpy',
     'cbl', 'js', 'css', 'jsp', 'htc', 'html', 'htm', 'xsd', 'wsdl', 'xslt'];
-  types: string[] = ['Java', 'Cobol', 'Database', 'SQL', 'Batch', 'Python', 'Altro'];
+  types: string[] = [];
   results: SearchResult[] = [];
   columnsOrder: Map<string, string> = new Map<string, string>([
     ['area', ''],
@@ -42,6 +42,7 @@ export class CodeSearchViewComponent implements OnInit {
   constructor(private http: HttpClient, private authService: AuthenticationService, private downloadService: DownloadService) {
     var localize = new Localize()
     this.resourcebundle = localize.get()
+    this.types = this.resourcebundle.lists.technologies
   }
 
   ngOnInit(): void {

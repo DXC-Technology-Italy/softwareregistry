@@ -7,11 +7,10 @@ export class Localize {
 
   constructor() {
     var userLang = navigator.language;
-    console.log(userLang);
 
     if (userLang == "it-IT" || userLang == "it") {
       this.resourcebundle = it
-    } else if (userLang == "en-US" || userLang == "en-EN" || userLang == "en") {
+    } else {
       this.resourcebundle = en
     }
   }

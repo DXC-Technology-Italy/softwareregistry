@@ -25,6 +25,7 @@ export const en = {
     parent: 'Parent',
     group: 'Group',
     file: 'File',
+    filename: "Filename",
     username: 'Username',
     password: 'Password',
     path: 'Path',
@@ -42,12 +43,21 @@ export const en = {
     login: 'Login',
     batch: 'Batch',
     online: 'Online',
-    logout: 'Logout'    
-  },
-  messages: {
+    logout: 'Logout',    
+    results: 'Results',
+    current_version: 'Current Version',
+    prerequisites: "Prerequisites",
+    object_type: 'Object Type',
+    git_url: "Git url",
+    web_service: "Web Service",
+    client_lib: "Client Library",
+    maven_modules: "Maven Modules",
+    maven_modules_list: "Maven Modules List",
+    view_modules: "View Modules",
+    users_list: "Users List",
+    user_details: "User Details",
     title: "Software Registry",
     dev_env: "Development Environment",
-    repo_list: "Software Repositories List",
     java_projects: "Java Projects",
     projects_list: "Projects List",
     dep_analysis: "Dependencies List",
@@ -62,7 +72,59 @@ export const en = {
     env_info: "Development environment information",
     view_java_projects: "View all Java projects and check maven dependencies",
     search_in_all_projects: "Search in all application sources",
-    view_los: "Generate software items lists for current software releases"    
-  }
-  
+    view_los: "Generate software items lists for current software releases",
+    delivery_check: "Delivery Check",
+    results_number: "Results number",
+    no_results: "No results",
+    releases: "Releases List For",
+    merge_request_type: "@type@ Merge Request",
+    merge_request_details: "The merge request has been approved by @author@ and the following Nexus URLs have been generated:",
+    nexus_url: "Nexus Url",
+    filesystem_path: "Filesystem path",
+    temp_libs: "Temporary libraries",
+    nexus_link: 'Nexus Link',    
+    vpn_credentials: " Use your <em>VPN credentials</em>",
+    maven_certified: "Maven Certified",
+    help_table: "How to fill the table",
+    all_modules: "View all modules",
+    repo_list: "Software Repositories List",
+    software_items_list: "Software Items List",
+  },
+  lists: {
+    technologies: ['Java', 'Cobol', 'Database', 'SQL', 'Batch', 'Python', 'Other'],
+  },
+  search: {
+    all: "Search in all sources",
+    all_prj: "Search filename in all projects",
+    text: "Text to search",
+    filename: "Filename to search in",
+    limit: "Limit results",
+    whole_word: "Whole word",
+    filename_to_search: "Filename to search",
+    bigCode: "Insert the Release BIG Code",
+    max_version: "Find new releases of project libraries",
+    project_helper: "Insert a project name to find new releases of its libraries",
+    show_temp_libs:"Show temporary libraries",
+    projects_library: "Find which projects use a library",
+    library_helper: "Insert library name",
+    big_code: "Insert a BIG code of a development currently opened",
+  },
+  buttons: {
+      reset_filters: "Reset Filters",
+      reset_updates: "Reset Updates",
+      download_report: "Download report",
+      download_text: "Download text version of the report",
+      download_xls: "Downlad report in CSV format",
+  }, 
+  text: {
+    los_info: "To generate the Software Items list of a Software Release it is necessary:" +
+        "<ul>" +
+          "<li>That the development is still in progress</li>" +
+          "<li>That Redmine Branch Tickets have the repository field with the format <strong>&lt;AREA_CODE&gt;/&lt;REPOSITORY_NAME&gt;</strong>" +
+          "  and the <u>repository is equal to the one present on git</u>." +
+          "</li>" +
+        "</ul>",
+    projects_warning: "Warning! Some data has been modified on the table. <br>" + 
+                        "By proceeding with saving all changes will be lost."
+  }  
 };

@@ -73,7 +73,13 @@ The following external components are also used:
 
 ## How to run the project(s)
 
-1. Configure and run the Jenkins pipeline, as described [here](./iac/README.md) 
+1. Configure and run the Jenkins pipeline, as described [here](./iac/README.md)
 2. Run the Java Indexer, following the [Indexer instructions](./indexer/README.md)
-3. Build and run the [Backend](./backend/README.md) Project
-4. Build and run the [Frontend](./frontend/README.md) Project
+3. Configure the file `iac/docker/database/docker-compose.yaml`
+4. Access the directory `iac/docker/database` and execute `docker-compose up -d`
+   - The command above is necessary to start a local instance of MongoDB, required by the backend
+5. Configure the [Backend](./backend/README.md) Project
+   - Ensure that the information about MongoDB configuration is the same used in the file `iac/docker/database/docker-compose.yaml`
+6. Build and run the [Backend](./backend/README.md) Project
+7. Configure the [Frontend](./frontend/README.md) Project
+8. Build and run the [Frontend](./frontend/README.md) Project

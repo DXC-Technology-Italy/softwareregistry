@@ -4,7 +4,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="/">{{resourcebundle.labels.home}}</a></li>
       <li class="breadcrumb-item">{{resourcebundle.labels.details}}</li>
-      <li class="breadcrumb-item active" aria-current="page">Lista User</li>
+      <li class="breadcrumb-item active" aria-current="page">{{resourcebundle.labels.users_list}}</li>
     </ol>
   </nav>
 
@@ -13,7 +13,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="detailModalLabel">Dettaglio Utente</h5>
+          <h5 class="modal-title" id="detailModalLabel">{{resourcebundle.labels.user_details}}</h5>
 
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -56,8 +56,8 @@
   </div>
   <form #form="ngForm">
     <div class="table-responsive">
-      <table class="table table-bordered table-sm align-middle" aria-label="Elenco Utenti" style="table-layout: auto">
-        <caption style="display:none">Elenco Utenti</caption>
+      <table class="table table-bordered table-sm align-middle" aria-label="User List" style="table-layout: auto">
+        <caption style="display:none">{{resourcebundle.labels.users_list}}</caption>
         <thead>
         <tr>
           <th scope="col"><span class="ms-2">{{resourcebundle.labels.username}}</span></th>

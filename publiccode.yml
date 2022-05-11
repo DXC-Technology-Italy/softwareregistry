@@ -27,7 +27,7 @@ description:
       - Visualization of the updated software objects list in a development branch
 
     shortDescription: |-
-      Software Registry is a tool that make the development phase simplier by showing extended information about projects and allowing code searches.
+      Software Registry makes software development phase simplier by showing extended information about projects and allowing source code searches.
 developmentStatus: development
 it:
   conforme:
